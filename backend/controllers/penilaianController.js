@@ -10,7 +10,6 @@ exports.getPenilaian = (req, res) => {
   const status = req.query.status || "";
 
   let sql = `
-
         SELECT
 
             m.id,
@@ -22,9 +21,9 @@ exports.getPenilaian = (req, res) => {
             d.id AS divisi_id,
             d.nama_divisi,
 
-            IFNULL(p.nilai,'-') nilai,
-            IFNULL(p.grade,'-') grade,
-            IFNULL(p.catatan,'') catatan,
+            COALESCE(p.nilai::text,'-') nilai,
+            COALESCE(p.grade,'-') grade,
+            COALESCE(p.catatan,'') catatan,
 
             (
                 SELECT COUNT(*)
@@ -67,22 +66,20 @@ exports.getPenilaian = (req, res) => {
   // ==========================
 
   if (search !== "") {
+    params.push(`%${search}%`);
+    params.push(`%${search}%`);
     sql += `
-
             AND (
 
-                m.nama LIKE ?
+                m.nama LIKE $${params.length - 1}
 
                 OR
 
-                m.nim LIKE ?
+                m.nim LIKE $${params.length}
 
             )
 
         `;
-
-    params.push(`%${search}%`);
-    params.push(`%${search}%`);
   }
 
   // ==========================
@@ -90,11 +87,10 @@ exports.getPenilaian = (req, res) => {
   // ==========================
 
   if (divisi !== "") {
-    sql += `
-            AND m.divisi_id = ?
-        `;
-
     params.push(divisi);
+    sql += `
+            AND m.divisi_id = $${params.length}
+        `;
   }
 
   // ==========================
@@ -119,7 +115,7 @@ exports.getPenilaian = (req, res) => {
         ORDER BY m.nama ASC
     `;
 
-  db.query(sql, params, (err, rows) => {
+  db.query(sql, params, (err, result) => {
     if (err) {
       console.log(err);
 
@@ -130,12 +126,12 @@ exports.getPenilaian = (req, res) => {
       });
     }
 
-    res.json(rows);
+    res.json(result.rows);
   });
 };
 
 // ==========================================
-// DETAIL MAHASASISWA
+// DETAIL MAHASISWA
 // ==========================================
 
 exports.getDetailPenilaian = (req, res) => {
@@ -153,9 +149,9 @@ exports.getDetailPenilaian = (req, res) => {
 
             d.nama_divisi,
 
-            IFNULL(p.nilai,'') nilai,
-            IFNULL(p.grade,'') grade,
-            IFNULL(p.catatan,'') catatan,
+            COALESCE(p.nilai::text,'') nilai,
+            COALESCE(p.grade,'') grade,
+            COALESCE(p.catatan,'') catatan,
 
             (
                 SELECT COUNT(*)
@@ -178,12 +174,12 @@ exports.getDetailPenilaian = (req, res) => {
         LEFT JOIN penilaian p
             ON p.mahasiswa_id=m.id
 
-        WHERE m.id=?
+        WHERE m.id=$1
 
         LIMIT 1
     `,
     [id],
-    (err, rows) => {
+    (err, result) => {
       if (err) {
         console.log(err);
 
@@ -192,13 +188,13 @@ exports.getDetailPenilaian = (req, res) => {
         });
       }
 
-      if (rows.length == 0) {
+      if (result.rows.length == 0) {
         return res.status(404).json({
           message: "Mahasiswa tidak ditemukan",
         });
       }
 
-      res.json(rows[0]);
+      res.json(result.rows[0]);
     },
   );
 };
@@ -227,7 +223,7 @@ exports.simpanPenilaian = (req, res) => {
     `
         SELECT id
         FROM penilaian
-        WHERE mahasiswa_id=?
+        WHERE mahasiswa_id=$1
     `,
     [mahasiswa_id],
     (err, rows) => {
@@ -243,18 +239,18 @@ exports.simpanPenilaian = (req, res) => {
       // UPDATE
       // ======================================
 
-      if (rows.length > 0) {
+      if (rows.rows.length > 0) {
         db.query(
           `
                 UPDATE penilaian
 
                 SET
 
-                    nilai=?,
-                    grade=?,
-                    catatan=?
+                    nilai=$1,
+                    grade=$2,
+                    catatan=$3
 
-                WHERE mahasiswa_id=?
+                WHERE mahasiswa_id=$4
             `,
           [nilai, grade, catatan, mahasiswa_id],
           (err2) => {
@@ -290,10 +286,10 @@ exports.simpanPenilaian = (req, res) => {
 
                     VALUES
                     (
-                        ?,
-                        ?,
-                        ?,
-                        ?
+                        $1,
+                        $2,
+                        $3,
+                        $4
                     )
                 `,
           [mahasiswa_id, nilai, grade, catatan],
@@ -358,7 +354,7 @@ exports.getStatistik = (req, res) => {
 
         `,
 
-    (err, rows) => {
+    (err, result) => {
       if (err) {
         console.log(err);
 
@@ -367,7 +363,7 @@ exports.getStatistik = (req, res) => {
         });
       }
 
-      res.json(rows[0]);
+      res.json(result.rows[0]);
     },
   );
 };

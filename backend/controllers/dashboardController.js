@@ -15,13 +15,13 @@ exports.getDashboard = async (req, res) => {
     const queryKehadiran = `
             SELECT COUNT(*) AS total_kehadiran
             FROM kehadiran
-            WHERE tanggal = CURDATE()
+            WHERE tanggal = CURRENT_DATE
         `;
 
     const queryAktivitas = `
             SELECT COUNT(*) AS total_aktivitas
             FROM aktivitas
-            WHERE tanggal = CURDATE()
+            WHERE tanggal = CURRENT_DATE
         `;
 
     db.query(queryMahasiswa, (err, mahasiswaResult) => {
@@ -37,13 +37,13 @@ exports.getDashboard = async (req, res) => {
             if (err) return res.status(500).json(err);
 
             res.json({
-              total_mahasiswa: mahasiswaResult[0].total_mahasiswa,
+              total_mahasiswa: mahasiswaResult.rows[0].total_mahasiswa,
 
-              total_divisi: divisiResult[0].total_divisi,
+              total_divisi: divisiResult.rows[0].total_divisi,
 
-              total_kehadiran: kehadiranResult[0].total_kehadiran,
+              total_kehadiran: kehadiranResult.rows[0].total_kehadiran,
 
-              total_aktivitas: aktivitasResult[0].total_aktivitas,
+              total_aktivitas: aktivitasResult.rows[0].total_aktivitas,
             });
           });
         });

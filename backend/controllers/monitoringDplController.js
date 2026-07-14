@@ -37,7 +37,7 @@ exports.getMonitoring = (req, res) => {
 
     LEFT JOIN kehadiran k
         ON k.mahasiswa_id = m.id
-        AND k.tanggal = CURDATE()
+        AND k.tanggal = CURRENT_DATE
 
     WHERE 1=1
   `;
@@ -49,15 +49,14 @@ exports.getMonitoring = (req, res) => {
   // ==========================
 
   if (search !== "") {
+    params.push(`%${search}%`);
+    params.push(`%${search}%`);
     sql += `
       AND (
-          m.nama LIKE ?
-          OR m.nim LIKE ?
+          m.nama LIKE $${params.length - 1}
+          OR m.nim LIKE $${params.length}
       )
     `;
-
-    params.push(`%${search}%`);
-    params.push(`%${search}%`);
   }
 
   // ==========================
@@ -65,11 +64,10 @@ exports.getMonitoring = (req, res) => {
   // ==========================
 
   if (divisi !== "") {
-    sql += `
-      AND m.divisi_id = ?
-    `;
-
     params.push(divisi);
+    sql += `
+      AND m.divisi_id = $${params.length}
+    `;
   }
 
   // ==========================
@@ -82,11 +80,10 @@ exports.getMonitoring = (req, res) => {
         AND k.id IS NULL
       `;
     } else {
-      sql += `
-        AND k.status = ?
-      `;
-
       params.push(status);
+      sql += `
+        AND k.status = $${params.length}
+      `;
     }
   }
 
@@ -96,7 +93,7 @@ exports.getMonitoring = (req, res) => {
       ORDER BY m.nama ASC
   `;
 
-  db.query(sql, params, (err, rows) => {
+  db.query(sql, params, (err, result) => {
     if (err) {
       console.log(err);
 
@@ -106,7 +103,7 @@ exports.getMonitoring = (req, res) => {
       });
     }
 
-    res.json(rows);
+    res.json(result.rows);
   });
 };
 
@@ -145,16 +142,16 @@ exports.getDetailMahasiswa = (req, res) => {
 
     LEFT JOIN kehadiran k
         ON k.mahasiswa_id=m.id
-        AND k.tanggal=CURDATE()
+        AND k.tanggal=CURRENT_DATE
 
-    WHERE m.id=?
+    WHERE m.id=$1
 
     LIMIT 1
     `,
 
     [id],
 
-    (err, rows) => {
+    (err, result) => {
       if (err) {
         console.log(err);
 
@@ -164,14 +161,14 @@ exports.getDetailMahasiswa = (req, res) => {
         });
       }
 
-      if (rows.length === 0) {
+      if (result.rows.length === 0) {
         return res.status(404).json({
           success: false,
           message: "Mahasiswa tidak ditemukan",
         });
       }
 
-      res.json(rows[0]);
+      res.json(result.rows[0]);
     },
   );
 };

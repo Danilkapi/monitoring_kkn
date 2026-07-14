@@ -27,7 +27,7 @@ exports.getProfile = (req, res) => {
     LEFT JOIN divisi d
     ON d.id=m.divisi_id
 
-    WHERE m.user_id=?
+    WHERE m.user_id=$1
     LIMIT 1
   `;
 
@@ -40,13 +40,13 @@ exports.getProfile = (req, res) => {
       });
     }
 
-    if (result.length === 0) {
+    if (result.rows.length === 0) {
       return res.status(404).json({
         message: "Profil mahasiswa tidak ditemukan.",
       });
     }
 
-    res.json(result[0]);
+    res.json(result.rows[0]);
   });
 };
 
@@ -81,7 +81,7 @@ exports.updateProfile = (req, res) => {
       u.id,
       u.password
     FROM users u
-    WHERE u.id=?
+    WHERE u.id=$1
     `,
     [userId],
     async (err, userResult) => {
@@ -91,13 +91,13 @@ exports.updateProfile = (req, res) => {
         });
       }
 
-      if (!userResult.length) {
+      if (!userResult.rows.length) {
         return res.status(404).json({
           message: "User tidak ditemukan.",
         });
       }
 
-      const user = userResult[0];
+      const user = userResult.rows[0];
 
       // ==========================
       // UPDATE PASSWORD
@@ -123,8 +123,8 @@ exports.updateProfile = (req, res) => {
         db.query(
           `
           UPDATE users
-          SET password=?
-          WHERE id=?
+          SET password=$1
+          WHERE id=$2
           `,
           [hashPassword, userId],
           (err) => {
@@ -156,9 +156,9 @@ exports.updateProfile = (req, res) => {
       `
     UPDATE users
     SET
-      nama=?
+      nama=$1
     WHERE
-      id=?
+      id=$2
     `,
       [nama, userId],
       (err) => {
@@ -176,10 +176,10 @@ exports.updateProfile = (req, res) => {
           `
         UPDATE mahasiswa
         SET
-          nama=?,
-          no_hp=?
+          nama=$1,
+          no_hp=$2
         WHERE
-          user_id=?
+          user_id=$3
         `,
           [nama, no_hp, userId],
           (err) => {
@@ -218,8 +218,8 @@ exports.uploadFoto = (req, res) => {
   db.query(
     `
     UPDATE mahasiswa
-    SET foto=?
-    WHERE user_id=?
+    SET foto=$1
+    WHERE user_id=$2
     `,
     [namaFile, userId],
     (err) => {

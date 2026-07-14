@@ -18,11 +18,11 @@ exports.getProfile = (req, res) => {
         foto,
         created_at
     FROM users
-    WHERE id=?
+    WHERE id=$1
     LIMIT 1
     `,
     [userId],
-    (err, rows) => {
+    (err, result) => {
       if (err) {
         console.log(err);
 
@@ -32,14 +32,14 @@ exports.getProfile = (req, res) => {
         });
       }
 
-      if (rows.length === 0) {
+      if (result.rows.length === 0) {
         return res.status(404).json({
           success: false,
           message: "User tidak ditemukan",
         });
       }
 
-      res.json(rows[0]);
+      res.json(result.rows[0]);
     },
   );
 };
@@ -69,9 +69,9 @@ exports.updateProfile = (req, res) => {
       `
       UPDATE users
       SET
-          nama=?,
-          email=?
-      WHERE id=?
+          nama=$1,
+          email=$2
+      WHERE id=$3
       `,
       [nama, email, userId],
       (err) => {
@@ -104,10 +104,10 @@ exports.updateProfile = (req, res) => {
     `
     UPDATE users
     SET
-        nama=?,
-        email=?,
-        password=?
-    WHERE id=?
+        nama=$1,
+        email=$2,
+        password=$3
+    WHERE id=$4
     `,
     [nama, email, hashPassword, userId],
     (err) => {
@@ -147,8 +147,8 @@ exports.uploadFoto = (req, res) => {
   db.query(
     `
     UPDATE users
-    SET foto=?
-    WHERE id=?
+    SET foto=$1
+    WHERE id=$2
     `,
     [namaFile, userId],
     (err) => {

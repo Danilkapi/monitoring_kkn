@@ -17,7 +17,7 @@ exports.getAll = (req, res) => {
   db.query(sql, (err, result) => {
     if (err) return res.status(500).json(err);
 
-    res.json(result);
+    res.json(result.rows);
   });
 };
 
@@ -25,10 +25,10 @@ exports.getAll = (req, res) => {
 // GET BY ID
 // ===============================
 exports.getById = (req, res) => {
-  db.query("SELECT * FROM kehadiran WHERE id=?", [req.params.id], (err, result) => {
+  db.query("SELECT * FROM kehadiran WHERE id=$1", [req.params.id], (err, result) => {
     if (err) return res.status(500).json(err);
 
-    res.json(result[0]);
+    res.json(result.rows[0]);
   });
 };
 
@@ -48,7 +48,7 @@ exports.create = (req, res) => {
       longitude,
       status
     )
-    VALUES (?,?,?,?,?,?)
+    VALUES ($1,$2,$3,$4,$5,$6)
   `;
 
   db.query(sql, [mahasiswa_id, tanggal, jam_masuk, latitude, longitude, status], (err) => {
@@ -69,13 +69,13 @@ exports.update = (req, res) => {
   const sql = `
     UPDATE kehadiran
     SET
-      mahasiswa_id=?,
-      tanggal=?,
-      jam_masuk=?,
-      latitude=?,
-      longitude=?,
-      status=?
-    WHERE id=?
+      mahasiswa_id=$1,
+      tanggal=$2,
+      jam_masuk=$3,
+      latitude=$4,
+      longitude=$5,
+      status=$6
+    WHERE id=$7
   `;
 
   db.query(sql, [mahasiswa_id, tanggal, jam_masuk, latitude, longitude, status, req.params.id], (err) => {
@@ -91,7 +91,7 @@ exports.update = (req, res) => {
 // DELETE
 // ===============================
 exports.delete = (req, res) => {
-  db.query("DELETE FROM kehadiran WHERE id=?", [req.params.id], (err) => {
+  db.query("DELETE FROM kehadiran WHERE id=$1", [req.params.id], (err) => {
     if (err) return res.status(500).json(err);
 
     res.json({

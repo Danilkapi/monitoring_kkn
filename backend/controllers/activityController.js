@@ -14,16 +14,16 @@ exports.getAll = (req, res) => {
   db.query(sql, (err, result) => {
     if (err) return res.status(500).json(err);
 
-    res.json(result);
+    res.json(result.rows);
   });
 };
 
 // GET BY ID
 exports.getById = (req, res) => {
-  db.query("SELECT * FROM aktivitas WHERE id=?", [req.params.id], (err, result) => {
+  db.query("SELECT * FROM aktivitas WHERE id=$1", [req.params.id], (err, result) => {
     if (err) return res.status(500).json(err);
 
-    res.json(result[0]);
+    res.json(result.rows[0]);
   });
 };
 
@@ -41,7 +41,7 @@ exports.create = (req, res) => {
       tanggal,
       foto
     )
-    VALUES(?,?,?,?,?)
+    VALUES($1,$2,$3,$4,$5)
   `,
     [mahasiswa_id, judul_kegiatan, deskripsi, tanggal, foto],
     (err) => {
@@ -62,12 +62,12 @@ exports.update = (req, res) => {
     `
     UPDATE aktivitas
     SET
-      mahasiswa_id=?,
-      judul_kegiatan=?,
-      deskripsi=?,
-      tanggal=?,
-      foto=?
-    WHERE id=?
+      mahasiswa_id=$1,
+      judul_kegiatan=$2,
+      deskripsi=$3,
+      tanggal=$4,
+      foto=$5
+    WHERE id=$6
   `,
     [mahasiswa_id, judul_kegiatan, deskripsi, tanggal, foto, req.params.id],
     (err) => {
@@ -82,7 +82,7 @@ exports.update = (req, res) => {
 
 // DELETE
 exports.delete = (req, res) => {
-  db.query("DELETE FROM aktivitas WHERE id=?", [req.params.id], (err) => {
+  db.query("DELETE FROM aktivitas WHERE id=$1", [req.params.id], (err) => {
     if (err) return res.status(500).json(err);
 
     res.json({

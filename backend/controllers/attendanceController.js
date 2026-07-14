@@ -14,7 +14,7 @@ exports.createAttendance = (req, res) => {
       longitude,
       status
     )
-    VALUES (?, ?, ?, ?, ?, ?)
+    VALUES ($1, $2, $3, $4, $5, $6)
     `,
     [mahasiswa_id, tanggal, jam_masuk, latitude, longitude, status],
     (err, result) => {
@@ -45,7 +45,7 @@ exports.getAllAttendance = (req, res) => {
         return res.status(500).json(err);
       }
 
-      res.json(result);
+      res.json(result.rows);
     },
   );
 };
@@ -57,7 +57,7 @@ exports.getAttendanceByMahasiswa = (req, res) => {
     `
     SELECT *
     FROM kehadiran
-    WHERE mahasiswa_id = ?
+    WHERE mahasiswa_id = $1
     `,
     [id],
     (err, result) => {
@@ -65,7 +65,7 @@ exports.getAttendanceByMahasiswa = (req, res) => {
         return res.status(500).json(err);
       }
 
-      res.json(result);
+      res.json(result.rows);
     },
   );
 };
@@ -79,7 +79,7 @@ exports.scanAttendance = (req, res) => {
     `
     SELECT *
     FROM qr_sessions
-    WHERE token = ?
+    WHERE token = $1
     `,
     [token],
     (err, qrResult) => {
@@ -87,13 +87,13 @@ exports.scanAttendance = (req, res) => {
         return res.status(500).json(err);
       }
 
-      if (qrResult.length === 0) {
+      if (qrResult.rows.length === 0) {
         return res.status(404).json({
           message: "QR Code tidak valid",
         });
       }
 
-      const qr = qrResult[0];
+      const qr = qrResult.rows[0];
 
       if (new Date(qr.expired_at) < new Date()) {
         return res.status(400).json({
@@ -131,11 +131,11 @@ exports.scanAttendance = (req, res) => {
         )
         VALUES
         (
-          ?,
-          CURDATE(),
-          CURTIME(),
-          ?,
-          ?,
+          $1,
+          CURRENT_DATE,
+          CURRENT_TIME,
+          $2,
+          $3,
           'hadir'
         )
         `,

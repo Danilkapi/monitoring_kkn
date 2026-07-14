@@ -21,15 +21,15 @@ exports.dashboard = (req, res) => {
     `
     SELECT status
     FROM kehadiran
-    WHERE mahasiswa_id=?
-    AND tanggal=CURDATE()
+    WHERE mahasiswa_id=$1
+    AND tanggal=CURRENT_DATE
     LIMIT 1
     `,
     [mahasiswaId],
     (err, hadir) => {
       if (err) return res.status(500).json(err);
 
-      data.status = hadir.length ? hadir[0].status : "Belum Absen";
+      data.status = hadir.rows.length ? hadir.rows[0].status : "Belum Absen";
 
       // =============================
       // Aktivitas Bulan Ini
@@ -38,15 +38,15 @@ exports.dashboard = (req, res) => {
         `
         SELECT COUNT(*) total
         FROM aktivitas
-        WHERE mahasiswa_id=?
-        AND MONTH(tanggal)=MONTH(CURDATE())
-        AND YEAR(tanggal)=YEAR(CURDATE())
+        WHERE mahasiswa_id=$1
+        AND EXTRACT(MONTH FROM tanggal)=EXTRACT(MONTH FROM CURRENT_DATE)
+        AND EXTRACT(YEAR FROM tanggal)=EXTRACT(YEAR FROM CURRENT_DATE)
         `,
         [mahasiswaId],
         (err, aktivitas) => {
           if (err) return res.status(500).json(err);
 
-          data.aktivitas = aktivitas[0].total;
+          data.aktivitas = aktivitas.rows[0].total;
 
           // =============================
           // Total Kehadiran
@@ -55,13 +55,13 @@ exports.dashboard = (req, res) => {
             `
             SELECT COUNT(*) total
             FROM kehadiran
-            WHERE mahasiswa_id=?
+            WHERE mahasiswa_id=$1
             `,
             [mahasiswaId],
             (err, total) => {
               if (err) return res.status(500).json(err);
 
-              data.total_absen = total[0].total;
+              data.total_absen = total.rows[0].total;
 
               // =============================
               // Persentase
@@ -71,14 +71,14 @@ exports.dashboard = (req, res) => {
                 SELECT
                 COUNT(*) hadir
                 FROM kehadiran
-                WHERE mahasiswa_id=?
+                WHERE mahasiswa_id=$1
                 AND status='hadir'
                 `,
                 [mahasiswaId],
                 (err, hadirTotal) => {
                   if (err) return res.status(500).json(err);
 
-                  const hadir = hadirTotal[0].hadir;
+                  const hadir = hadirTotal.rows[0].hadir;
 
                   data.persentase = data.total_absen == 0 ? 0 : Math.round((hadir / data.total_absen) * 100);
 
@@ -88,17 +88,18 @@ exports.dashboard = (req, res) => {
                   db.query(
                     `
                     SELECT
-                      DAYNAME(tanggal) hari,
+                      TO_CHAR(tanggal, 'Day') hari,
                       COUNT(*) jumlah
                     FROM kehadiran
-                    WHERE mahasiswa_id=?
-                    GROUP BY DAYNAME(tanggal)
+                    WHERE mahasiswa_id=$1
+                    GROUP BY TO_CHAR(tanggal, 'Day'), EXTRACT(DOW FROM tanggal)
+                    ORDER BY EXTRACT(DOW FROM tanggal)
                     `,
                     [mahasiswaId],
                     (err, grafik) => {
                       if (err) return res.status(500).json(err);
 
-                      data.grafik = grafik;
+                      data.grafik = grafik.rows;
 
                       res.json(data);
                     },

@@ -40,17 +40,13 @@ exports.getLaporan = (req, res) => {
 };
 
 /* ==========================================================
-   MEMBANGUN FILTER SQL
+   MEMBANGUN FILTER SQL (PostgreSQL $N placeholders)
 ========================================================== */
 
 function buildFilter(
   divisi,
 
   mahasiswa,
-
-  tanggal_awal,
-
-  tanggal_akhir,
 
   alias = "m",
 ) {
@@ -63,9 +59,8 @@ function buildFilter(
   // ===========================
 
   if (divisi) {
-    where.push(`${alias}.divisi_id = ?`);
-
     values.push(divisi);
+    where.push(`${alias}.divisi_id = $${values.length}`);
   }
 
   // ===========================
@@ -73,9 +68,8 @@ function buildFilter(
   // ===========================
 
   if (mahasiswa) {
-    where.push(`${alias}.id = ?`);
-
     values.push(mahasiswa);
+    where.push(`${alias}.id = $${values.length}`);
   }
 
   return {
@@ -85,7 +79,7 @@ function buildFilter(
   };
 }
 /* ==========================================================
-   FILTER TANGGAL
+   FILTER TANGGAL (PostgreSQL $N placeholders)
 ========================================================== */
 
 function buildTanggal(
@@ -94,21 +88,20 @@ function buildTanggal(
   tanggal_akhir,
 
   alias,
+  offset = 0,
 ) {
   let where = [];
 
   let values = [];
 
   if (tanggal_awal) {
-    where.push(`${alias}.tanggal >= ?`);
-
     values.push(tanggal_awal);
+    where.push(`${alias}.tanggal >= $${offset + values.length}`);
   }
 
   if (tanggal_akhir) {
-    where.push(`${alias}.tanggal <= ?`);
-
     values.push(tanggal_akhir);
+    where.push(`${alias}.tanggal <= $${offset + values.length}`);
   }
 
   return {
@@ -123,9 +116,9 @@ function buildTanggal(
 ========================================================== */
 
 function laporanAbsensi(req, res, divisi, mahasiswa, tanggal_awal, tanggal_akhir) {
-  const filter = buildFilter(divisi, mahasiswa, tanggal_awal, tanggal_akhir, "m");
+  const filter = buildFilter(divisi, mahasiswa, "m");
 
-  const filterTanggal = buildTanggal(tanggal_awal, tanggal_akhir, "k");
+  const filterTanggal = buildTanggal(tanggal_awal, tanggal_akhir, "k", filter.values.length);
 
   let where = [...filter.where, ...filterTanggal.where];
 
@@ -196,9 +189,9 @@ function laporanAbsensi(req, res, divisi, mahasiswa, tanggal_awal, tanggal_akhir
       res.json({
         success: true,
 
-        total: result.length,
+        total: result.rows.length,
 
-        data: result,
+        data: result.rows,
       });
     },
   );
@@ -209,9 +202,9 @@ function laporanAbsensi(req, res, divisi, mahasiswa, tanggal_awal, tanggal_akhir
 ========================================================== */
 
 function laporanAktivitas(req, res, divisi, mahasiswa, tanggal_awal, tanggal_akhir) {
-  const filter = buildFilter(divisi, mahasiswa, tanggal_awal, tanggal_akhir, "m");
+  const filter = buildFilter(divisi, mahasiswa, "m");
 
-  const filterTanggal = buildTanggal(tanggal_awal, tanggal_akhir, "a");
+  const filterTanggal = buildTanggal(tanggal_awal, tanggal_akhir, "a", filter.values.length);
 
   let where = [...filter.where, ...filterTanggal.where];
 
@@ -273,9 +266,9 @@ function laporanAktivitas(req, res, divisi, mahasiswa, tanggal_awal, tanggal_akh
     res.json({
       success: true,
 
-      total: result.length,
+      total: result.rows.length,
 
-      data: result,
+      data: result.rows,
     });
   });
 }
@@ -313,9 +306,8 @@ function laporanMahasiswa(req, res, divisi) {
   let values = [];
 
   if (divisi) {
-    sql += " WHERE m.divisi_id=?";
-
     values.push(divisi);
+    sql += ` WHERE m.divisi_id=$${values.length}`;
   }
 
   sql += `
@@ -336,9 +328,9 @@ function laporanMahasiswa(req, res, divisi) {
     res.json({
       success: true,
 
-      total: result.length,
+      total: result.rows.length,
 
-      data: result,
+      data: result.rows,
     });
   });
 }
@@ -389,9 +381,9 @@ function laporanDivisi(req, res) {
     res.json({
       success: true,
 
-      total: result.length,
+      total: result.rows.length,
 
-      data: result,
+      data: result.rows,
     });
   });
 }

@@ -44,9 +44,9 @@ exports.generateQR = async (req, res) => {
       )
       VALUES
       (
-        ?,
-        ?,
-        ?,
+        $1,
+        $2,
+        $3,
         'aktif'
       )
       `,
@@ -84,16 +84,16 @@ exports.getLatestQR = (req, res) => {
     async (err, result) => {
       if (err) return res.status(500).json(err);
 
-      if (result.length === 0) {
+      if (result.rows.length === 0) {
         return res.json({
           message: "Belum ada QR aktif",
         });
       }
 
-      const qr = await QRCode.toDataURL(result[0].kode);
+      const qr = await QRCode.toDataURL(result.rows[0].kode);
 
       res.json({
-        ...result[0],
+        ...result.rows[0],
         qr,
       });
     },
@@ -117,24 +117,24 @@ exports.scanQR = (req, res) => {
     `
     SELECT *
     FROM qr_code
-    WHERE kode=?
+    WHERE kode=$1
     AND status='aktif'
     `,
     [kode],
     (err, result) => {
       if (err) return res.status(500).json(err);
 
-      if (result.length === 0) {
+      if (result.rows.length === 0) {
         return res.status(400).json({
           message: "QR tidak valid",
         });
       }
 
-      const qr = result[0];
+      const qr = result.rows[0];
 
       // QR Expired
       if (new Date() > new Date(qr.expired_at)) {
-        db.query("UPDATE qr_code SET status='expired' WHERE id=?", [qr.id]);
+        db.query("UPDATE qr_code SET status='expired' WHERE id=$1", [qr.id]);
 
         return res.status(400).json({
           message: "QR sudah expired",
@@ -151,13 +151,13 @@ exports.scanQR = (req, res) => {
         (err, lokasiResult) => {
           if (err) return res.status(500).json(err);
 
-          if (lokasiResult.length === 0) {
+          if (lokasiResult.rows.length === 0) {
             return res.status(400).json({
               message: "Lokasi KKN belum diatur.",
             });
           }
 
-          const lokasi = lokasiResult[0];
+          const lokasi = lokasiResult.rows[0];
 
           const jarak = hitungJarak(parseFloat(latitude), parseFloat(longitude), parseFloat(lokasi.latitude), parseFloat(lokasi.longitude));
 
@@ -172,14 +172,14 @@ exports.scanQR = (req, res) => {
             `
             SELECT *
             FROM kehadiran
-            WHERE mahasiswa_id=?
-            AND tanggal=CURDATE()
+            WHERE mahasiswa_id=$1
+            AND tanggal=CURRENT_DATE
             `,
             [mahasiswaId],
             (err, cek) => {
               if (err) return res.status(500).json(err);
 
-              if (cek.length > 0) {
+              if (cek.rows.length > 0) {
                 return res.status(400).json({
                   message: "Anda sudah melakukan absensi hari ini.",
                 });
@@ -208,12 +208,12 @@ exports.scanQR = (req, res) => {
                 )
                 VALUES
                 (
-                  ?,
-                  CURDATE(),
-                  CURTIME(),
-                  ?,
-                  ?,
-                  ?
+                  $1,
+                  CURRENT_DATE,
+                  CURRENT_TIME,
+                  $2,
+                  $3,
+                  $4
                 )
                 `,
                 [mahasiswaId, latitude, longitude, status],

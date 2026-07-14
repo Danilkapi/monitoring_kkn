@@ -15,11 +15,11 @@ exports.getLokasi = (req, res) => {
         return res.status(500).json(err);
       }
 
-      if (result.length === 0) {
+      if (result.rows.length === 0) {
         return res.json({});
       }
 
-      return res.json(result[0]);
+      return res.json(result.rows[0]);
     },
   );
 };
@@ -69,7 +69,7 @@ exports.saveLokasi = (req, res) => {
       // ==========================
       // INSERT
       // ==========================
-      if (result.length === 0) {
+      if (result.rows.length === 0) {
         db.query(
           `
           INSERT INTO lokasi_kkn
@@ -81,10 +81,10 @@ exports.saveLokasi = (req, res) => {
           )
           VALUES
           (
-            ?,
-            ?,
-            ?,
-            ?
+            $1,
+            $2,
+            $3,
+            $4
           )
           `,
           [nama_lokasi, latitude, longitude, radius],
@@ -109,13 +109,13 @@ exports.saveLokasi = (req, res) => {
           `
           UPDATE lokasi_kkn
           SET
-            nama_lokasi = ?,
-            latitude = ?,
-            longitude = ?,
-            radius = ?
-          WHERE id = ?
+            nama_lokasi = $1,
+            latitude = $2,
+            longitude = $3,
+            radius = $4
+          WHERE id = $5
           `,
-          [nama_lokasi, latitude, longitude, radius, result[0].id],
+          [nama_lokasi, latitude, longitude, radius, result.rows[0].id],
           (err) => {
             if (err) {
               return res.status(500).json(err);

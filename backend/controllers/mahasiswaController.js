@@ -9,7 +9,7 @@ exports.getAll = (req, res) => {
       return res.status(500).json(err);
     }
 
-    res.json(result);
+    res.json(result.rows);
   });
 };
 
@@ -19,18 +19,18 @@ exports.getAll = (req, res) => {
 exports.getById = (req, res) => {
   const { id } = req.params;
 
-  db.query("SELECT * FROM mahasiswa WHERE id=?", [id], (err, result) => {
+  db.query("SELECT * FROM mahasiswa WHERE id=$1", [id], (err, result) => {
     if (err) {
       return res.status(500).json(err);
     }
 
-    if (result.length === 0) {
+    if (result.rows.length === 0) {
       return res.status(404).json({
         message: "Mahasiswa tidak ditemukan",
       });
     }
 
-    res.json(result[0]);
+    res.json(result.rows[0]);
   });
 };
 
@@ -51,7 +51,7 @@ exports.create = (req, res) => {
       jabatan,
       divisi_id
     )
-    VALUES (?,?,?,?,?,?)
+    VALUES ($1,$2,$3,$4,$5,$6)
     `,
     [nim, nama, prodi, no_hp, jabatan, divisi_id],
     (err) => {
@@ -78,13 +78,13 @@ exports.update = (req, res) => {
     `
     UPDATE mahasiswa
     SET
-      nim=?,
-      nama=?,
-      prodi=?,
-      no_hp=?,
-      jabatan=?,
-      divisi_id=?
-    WHERE id=?
+      nim=$1,
+      nama=$2,
+      prodi=$3,
+      no_hp=$4,
+      jabatan=$5,
+      divisi_id=$6
+    WHERE id=$7
     `,
     [nim, nama, prodi, no_hp, jabatan, divisi_id, id],
     (err) => {
@@ -105,7 +105,7 @@ exports.update = (req, res) => {
 exports.delete = (req, res) => {
   const { id } = req.params;
 
-  db.query("DELETE FROM mahasiswa WHERE id=?", [id], (err) => {
+  db.query("DELETE FROM mahasiswa WHERE id=$1", [id], (err) => {
     if (err) {
       return res.status(500).json(err);
     }

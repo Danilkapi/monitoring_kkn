@@ -1,7 +1,7 @@
 const db = require("../config/db");
 
 // ======================================
-// GET AKTIVITAS MILIK MAHASASISWA
+// GET AKTIVITAS MILIK MAHASISWA
 // ======================================
 
 exports.getMyActivity = (req, res) => {
@@ -13,14 +13,14 @@ exports.getMyActivity = (req, res) => {
     FROM aktivitas a
     JOIN mahasiswa m
       ON m.id = a.mahasiswa_id
-    WHERE m.user_id=?
+    WHERE m.user_id=$1
     ORDER BY a.tanggal DESC
   `;
 
   db.query(sql, [userId], (err, result) => {
     if (err) return res.status(500).json(err);
 
-    res.json(result);
+    res.json(result.rows);
   });
 };
 
@@ -42,20 +42,20 @@ exports.create = (req, res) => {
   } = req.body;
 
   db.query(
-    "SELECT id FROM mahasiswa WHERE user_id=?",
+    "SELECT id FROM mahasiswa WHERE user_id=$1",
 
     [userId],
 
-    (err, mahasiswa) => {
+    (err, mahasiswaResult) => {
       if (err) return res.status(500).json(err);
 
-      if (!mahasiswa.length) {
+      if (!mahasiswaResult.rows.length) {
         return res.status(404).json({
           message: "Mahasiswa tidak ditemukan",
         });
       }
 
-      const mahasiswaId = mahasiswa[0].id;
+      const mahasiswaId = mahasiswaResult.rows[0].id;
 
       db.query(
         `
@@ -67,7 +67,7 @@ exports.create = (req, res) => {
           tanggal,
           foto
         )
-        VALUES (?,?,?,?,?)
+        VALUES ($1,$2,$3,$4,$5)
         `,
 
         [mahasiswaId, judul_kegiatan, deskripsi, tanggal, foto],
@@ -85,7 +85,7 @@ exports.create = (req, res) => {
 };
 
 // ======================================
-// UPDATE
+// UPDATE (PostgreSQL syntax)
 // ======================================
 
 exports.update = (req, res) => {
@@ -105,17 +105,15 @@ exports.update = (req, res) => {
 
   const sql = `
     UPDATE aktivitas a
-    JOIN mahasiswa m
-      ON a.mahasiswa_id=m.id
     SET
-      a.judul_kegiatan=?,
-      a.deskripsi=?,
-      a.tanggal=?,
-      a.foto=?
-    WHERE
-      a.id=?
-      AND
-      m.user_id=?
+      judul_kegiatan=$1,
+      deskripsi=$2,
+      tanggal=$3,
+      foto=$4
+    FROM mahasiswa m
+    WHERE a.mahasiswa_id=m.id
+      AND a.id=$5
+      AND m.user_id=$6
   `;
 
   db.query(
@@ -134,7 +132,7 @@ exports.update = (req, res) => {
 };
 
 // ======================================
-// DELETE
+// DELETE (PostgreSQL syntax)
 // ======================================
 
 exports.delete = (req, res) => {
@@ -143,14 +141,11 @@ exports.delete = (req, res) => {
   const id = req.params.id;
 
   const sql = `
-    DELETE a
-    FROM aktivitas a
-    JOIN mahasiswa m
-      ON a.mahasiswa_id=m.id
-    WHERE
-      a.id=?
-      AND
-      m.user_id=?
+    DELETE FROM aktivitas a
+    USING mahasiswa m
+    WHERE a.mahasiswa_id=m.id
+      AND a.id=$1
+      AND m.user_id=$2
   `;
 
   db.query(sql, [id, userId], (err) => {

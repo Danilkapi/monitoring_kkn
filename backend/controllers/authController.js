@@ -24,7 +24,7 @@ exports.login = (req, res) => {
     LEFT JOIN mahasiswa m
       ON m.user_id = u.id
 
-    WHERE u.email = ?
+    WHERE u.email = $1
   `;
 
   db.query(sql, [email], async (err, result) => {
@@ -35,13 +35,13 @@ exports.login = (req, res) => {
       });
     }
 
-    if (result.length === 0) {
+    if (result.rows.length === 0) {
       return res.status(404).json({
         message: "User tidak ditemukan",
       });
     }
 
-    const user = result[0];
+    const user = result.rows[0];
 
     console.log("========== LOGIN ==========");
     console.log(user);
