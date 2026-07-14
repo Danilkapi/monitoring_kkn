@@ -98,3 +98,25 @@ CREATE TABLE IF NOT EXISTS penilaian (
     grade VARCHAR(5),
     catatan TEXT
 );
+
+-- ============================================
+-- SEED DATA (Data Awal)
+-- ============================================
+
+-- Users (password: admin123 untuk admin, 123456 untuk mahasiswa & DPL)
+INSERT INTO users (nama, email, password, role) VALUES
+('Admin KKN', 'admin@gmail.com', '$2b$10$Zs5D6RJlBowptrs9XbXdN.AtMHZOo.JE.srfFIutETFrBjqh51ek6', 'admin'),
+('DPL Satu', 'dpl@gmail.com', '$2b$10$Zs5D6RJlBowptrs9XbXdN.AtMHZOo.JE.srfFIutETFrBjqh51ek6', 'dpl'),
+('Budi Santoso', 'budi@gmail.com', '$2b$10$M1nK2CK6fFQI4rMeDJoo5u6XnVlb3ndBiBtQZsGfQHt7u/ltjlNqC', 'mahasiswa'),
+('Siti Rahayu', 'siti@gmail.com', '$2b$10$M1nK2CK6fFQI4rMeDJoo5u6XnVlb3ndBiBtQZsGfQHt7u/ltjlNqC', 'mahasiswa');
+
+-- Divisi
+INSERT INTO divisi (nama_divisi, deskripsi) VALUES
+('Divisi Administrasi', 'Pengelolaan administrasi dan dokumentasi KKN'),
+('Divisi Teknologi', 'Pengembangan sistem informasi dan website'),
+('Divisi Sosial', 'Program pemberdayaan masyarakat');
+
+-- Mahasiswa (terhubung ke users)
+INSERT INTO mahasiswa (user_id, nim, nama, prodi, no_hp, jabatan, divisi_id) VALUES
+(3, '2021001', 'Budi Santoso', 'Teknik Informatika', '081234567890', 'Ketua Kelompok', 2),
+(4, '2021002', 'Siti Rahayu', 'Sistem Informasi', '081234567891', 'Anggota', 3);
