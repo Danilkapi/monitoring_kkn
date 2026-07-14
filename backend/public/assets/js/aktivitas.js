@@ -26,7 +26,7 @@ async function loadAktivitas() {
           ${
             item.foto
               ? `<img
-                    src="http://localhost:3000/uploads/${item.foto}"
+                    src="/uploads/${item.foto}"
                     class="foto-aktivitas"
                     alt="foto aktivitas">`
               : `<span class="no-foto">Tidak ada</span>`
@@ -65,7 +65,7 @@ async function loadAktivitas() {
 
 // LOAD MAHASISWA
 async function loadMahasiswa() {
-  const response = await fetch("http://localhost:3000/api/mahasiswa", {
+  const response = await fetch("/api/mahasiswa", {
     headers: {
       Authorization: `Bearer ${authToken}`,
     },
@@ -105,7 +105,7 @@ async function simpanAktivitas() {
 
     formData.append("foto", file);
 
-    const uploadResponse = await fetch("http://localhost:3000/api/activity/upload", {
+    const uploadResponse = await fetch("/api/activity/upload", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${authToken}`,
@@ -201,7 +201,7 @@ async function uploadFoto() {
 
   formData.append("foto", file);
 
-  const response = await fetch("http://localhost:3000/api/activity/upload/1", {
+  const response = await fetch("/api/activity/upload/1", {
     method: "POST",
     headers: {
       Authorization: `Bearer ${authToken}`,

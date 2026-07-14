@@ -110,7 +110,7 @@ function renderTable() {
   let html = "";
 
   daftarAktivitas.forEach((item) => {
-    const foto = item.foto ? `http://localhost:3000/uploads/${item.foto}` : "../assets/image/no-image.png";
+    const foto = item.foto ? `/uploads/${item.foto}` : "../assets/image/no-image.png";
 
     html += `
 
@@ -219,7 +219,7 @@ async function simpanAktivitas() {
     formData.append("foto", fotoInput.files[0]);
 
     try {
-      const response = await fetch("http://localhost:3000/api/mahasiswa/activity/upload", {
+      const response = await fetch("/api/mahasiswa/activity/upload", {
         method: "POST",
 
         headers: {
@@ -307,7 +307,7 @@ function lihatDetail(id) {
 
   document.getElementById("detailDeskripsi").innerHTML = data.deskripsi;
 
-  document.getElementById("detailFoto").src = data.foto ? `http://localhost:3000/uploads/${data.foto}` : "../assets/image/no-image.png";
+  document.getElementById("detailFoto").src = data.foto ? `/uploads/${data.foto}` : "../assets/image/no-image.png";
 
   modalDetail.show();
 }
@@ -329,7 +329,7 @@ function editAktivitas(id) {
 
   document.getElementById("tanggal").value = data.tanggal;
 
-  document.getElementById("previewFoto").src = data.foto ? `http://localhost:3000/uploads/${data.foto}` : "../assets/image/no-image.png";
+  document.getElementById("previewFoto").src = data.foto ? `/uploads/${data.foto}` : "../assets/image/no-image.png";
 
   window.scrollTo({
     top: 0,

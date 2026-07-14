@@ -149,7 +149,7 @@ async function kirimAbsensi(kode, latitude, longitude) {
   updateStatus("fa-solid fa-cloud-arrow-up", "#0d6efd", "Mengirim data absensi...");
 
   try {
-    const response = await fetch("http://localhost:3000/api/qr/scan", {
+    const response = await fetch("/api/qr/scan", {
       method: "POST",
 
       headers: {

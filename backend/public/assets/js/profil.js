@@ -66,7 +66,7 @@ async function uploadFotoProfil(e) {
   try {
     showLoading(true);
 
-    const response = await fetch("http://localhost:3000/api/mahasiswa/profile/upload", {
+    const response = await fetch("/api/mahasiswa/profile/upload", {
       method: "POST",
 
       headers: {
@@ -84,7 +84,7 @@ async function uploadFotoProfil(e) {
 
     fotoProfilBaru = result.filename;
 
-    document.getElementById("fotoProfil").src = `http://localhost:3000/uploads/profile/${result.filename}`;
+    document.getElementById("fotoProfil").src = `/uploads/profile/${result.filename}`;
 
     showToast("Foto profil berhasil diupload.", true);
   } catch (err) {
@@ -177,7 +177,7 @@ function tampilkanProfil(data) {
 
   if (foto) {
     if (data.foto && data.foto !== "") {
-      foto.src = `http://localhost:3000/uploads/profile/${data.foto}`;
+      foto.src = `/uploads/profile/${data.foto}`;
     } else {
       foto.src = "../assets/image/default-user.png";
     }

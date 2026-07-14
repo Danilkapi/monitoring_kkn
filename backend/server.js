@@ -1,11 +1,13 @@
 require("dotenv").config();
 
-console.log(process.env.JWT_SECRET);
-
 const express = require("express");
 const cors = require("cors");
+const path = require("path");
+const fs = require("fs");
 
 const app = express();
+
+const PORT = process.env.PORT || 3000;
 
 const dashboardRoutes = require("./routes/dashboardRoutes");
 const absensiRoutes = require("./routes/absensiRoutes");
@@ -25,6 +27,10 @@ app.use(express.json());
 app.use(express.static("public"));
 
 // supaya gambar upload bisa diakses
+const uploadsDir = path.join(__dirname, "uploads");
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir);
+}
 app.use("/uploads", express.static("uploads"));
 
 app.get("/", (req, res) => {
@@ -49,6 +55,7 @@ app.use("/api/absensi", absensiRoutes);
 app.use("/api/qr", qrRoutes);
 app.use("/api/lokasi", lokasiRoutes);
 app.use("/api/laporan", laporanRoutes);
-app.listen(3000, () => {
-  console.log("Server berjalan di port 3000");
+
+app.listen(PORT, () => {
+  console.log(`Server berjalan di port ${PORT}`);
 });

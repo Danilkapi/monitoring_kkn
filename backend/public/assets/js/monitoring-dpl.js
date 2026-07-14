@@ -166,7 +166,7 @@ function renderTable(data) {
         text = "Tidak Valid";
       }
 
-      const foto = item.foto ? `http://localhost:3000/uploads/profile/${item.foto}` : "../assets/image/user.png";
+      const foto = item.foto ? `/uploads/profile/${item.foto}` : "../assets/image/user.png";
 
       return `
 <tr>
