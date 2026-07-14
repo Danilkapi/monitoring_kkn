@@ -1,0 +1,146 @@
+/* =====================================================
+   LOGIN PAGE
+===================================================== */
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family:
+    Segoe UI,
+    Tahoma,
+    Geneva,
+    Verdana,
+    sans-serif;
+
+  background: linear-gradient(135deg, #0d6efd, #6ea8fe);
+
+  min-height: 100vh;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* =====================================================
+   CARD
+===================================================== */
+
+.login-card {
+  width: 100%;
+  max-width: 430px;
+
+  background: #fff;
+
+  border-radius: 18px;
+
+  overflow: hidden;
+
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+}
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.login-header {
+  background: #0d6efd;
+
+  color: #fff;
+
+  text-align: center;
+
+  padding: 35px 25px;
+}
+
+.logo {
+  width: 90px;
+
+  height: 90px;
+
+  border-radius: 50%;
+
+  background: #fff;
+
+  padding: 8px;
+
+  margin-bottom: 18px;
+}
+
+.login-header h2 {
+  font-weight: 700;
+
+  margin-bottom: 8px;
+}
+
+.login-header p {
+  margin: 0;
+
+  opacity: 0.9;
+}
+
+/* =====================================================
+   BODY
+===================================================== */
+
+.login-body {
+  padding: 35px;
+}
+
+.login-body label {
+  font-weight: 600;
+
+  margin-bottom: 8px;
+}
+
+.input-group-text {
+  background: #0d6efd;
+
+  color: white;
+
+  border: none;
+}
+
+.form-control {
+  height: 50px;
+
+  border-radius: 0 10px 10px 0;
+}
+
+.form-control:focus {
+  box-shadow: none;
+
+  border-color: #0d6efd;
+}
+
+/* =====================================================
+   BUTTON
+===================================================== */
+
+.btn-primary {
+  height: 50px;
+
+  border-radius: 10px;
+
+  font-weight: 600;
+
+  font-size: 16px;
+}
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media (max-width: 576px) {
+  .login-card {
+    margin: 20px;
+  }
+
+  .login-body {
+    padding: 25px;
+  }
+
+  .logo {
+    width: 75px;
+    height: 75px;
+  }
+}

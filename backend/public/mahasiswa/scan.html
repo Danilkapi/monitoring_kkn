@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Scan QR Absensi</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="../assets/css/base.css" />
+    <link rel="stylesheet" href="../assets/css/layout.css" />
+    <link rel="stylesheet" href="../assets/css/components.css" />
+    <link rel="stylesheet" href="../assets/css/responsive.css" />
+    <link rel="stylesheet" href="../assets/css/dashboard.css" />
+    <link rel="stylesheet" href="../assets/css/scan.css" />
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
+  </head>
+
+  <body>
+    <!-- Overlay -->
+    <div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+    <div class="wrapper">
+      <!-- ================= Sidebar ================= -->
+
+      <aside class="sidebar" id="sidebar">
+        <div class="logo-area">
+          <img src="../assets/image/Logo UYM.jpg" class="logo-img" alt="Logo UYM" />
+
+          <h3>KKN UYM</h3>
+
+          <small>Monitoring Mahasiswa</small>
+        </div>
+
+        <ul>
+          <li>
+            <a href="dashboard.html">
+              <i class="fa-solid fa-house"></i>
+
+              Dashboard
+            </a>
+          </li>
+
+          <li class="active">
+            <a href="scan.html">
+              <i class="fa-solid fa-qrcode"></i>
+
+              Scan QR
+            </a>
+          </li>
+
+          <li>
+            <a href="aktivitas.html">
+              <i class="fa-solid fa-list-check"></i>
+
+              Aktivitas
+            </a>
+          </li>
+
+          <li>
+            <a href="profil.html">
+              <i class="fa-solid fa-user"></i>
+
+              Profil
+            </a>
+          </li>
+        </ul>
+      </aside>
+
+      <!-- ================= Main ================= -->
+
+      <main class="main">
+        <!-- ================= Navbar ================= -->
+
+        <div class="navbar">
+          <div class="navbar-left">
+            <button id="menuToggle" class="menu-toggle">
+              <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <div>
+              <h2>Scan QR Absensi</h2>
+
+              <small> Scan QR Code Kehadiran Mahasiswa </small>
+            </div>
+          </div>
+
+          <div class="navbar-right">
+            <span id="namaUser"></span>
+
+            <button class="btn btn-danger" onclick="logout()">Logout</button>
+          </div>
+        </div>
+
+        <!-- ================= Content ================= -->
+
+        <div class="content">
+          <div class="card">
+            <div class="card-header-custom">
+              <h3>
+                <i class="fa-solid fa-qrcode"></i>
+
+                Scan QR Kehadiran
+              </h3>
+            </div>
+
+            <div class="scan-header">
+              <i class="fa-solid fa-qrcode scan-icon"></i>
+
+              <h4>Scan QR Kehadiran</h4>
+
+              <p>Arahkan kamera ke QR Code yang ditampilkan Admin atau pilih gambar QR dari perangkat Anda.</p>
+            </div>
+
+            <!-- Reader -->
+
+            <div id="reader" class="qr-reader"></div>
+
+            <!-- Loading -->
+
+            <div id="loadingCamera" class="loading-box">
+              <div class="spinner"></div>
+
+              <p>Mengaktifkan kamera...</p>
+            </div>
+
+            <!-- Tombol -->
+
+            <div class="scan-action">
+              <button class="btn btn-primary" id="btnStartCamera">
+                <i class="fa-solid fa-camera"></i>
+
+                Scan Kamera
+              </button>
+
+              <button class="btn btn-success" id="btnUploadQR">
+                <i class="fa-solid fa-image"></i>
+
+                Pilih Gambar QR
+              </button>
+            </div>
+
+            <!-- Upload -->
+
+            <input type="file" id="uploadQR" accept="image/*" hidden />
+
+            <!-- Status -->
+
+            <div id="statusCard" class="status-card">
+              <i id="statusIcon" class="fa-solid fa-circle-info"> </i>
+
+              <span id="statusText"> Menunggu QR Code... </span>
+            </div>
+
+            <div id="status" class="status-message"></div>
+          </div>
+
+          <!-- ================= Petunjuk ================= -->
+
+          <div class="card mt-20">
+            <div class="card-header-custom">
+              <h3>
+                <i class="fa-solid fa-circle-info"></i>
+
+                Petunjuk Scan
+              </h3>
+            </div>
+
+            <div class="info-card">
+              <ul>
+                <li>
+                  Gunakan tombol <strong>Scan Kamera</strong>
+                  untuk melakukan scan secara langsung.
+                </li>
+
+                <li>
+                  Gunakan tombol
+                  <strong>Pilih Gambar QR</strong>
+                  apabila QR Code tersimpan di galeri atau dikirim melalui WhatsApp.
+                </li>
+
+                <li>Pastikan QR Code masih aktif sebelum melakukan scan.</li>
+
+                <li>Izinkan akses kamera jika browser meminta izin.</li>
+
+                <li>Setelah QR berhasil dibaca, absensi akan diproses secara otomatis.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- ================= JS ================= -->
+
+    <script src="https://unpkg.com/html5-qrcode"></script>
+
+    <script src="../assets/js/api.js"></script>
+
+    <script src="../assets/js/mahasiswa-auth.js"></script>
+
+    <script src="../assets/js/scan.js"></script>
+
+    <script src="../assets/js/sidebar.js"></script>
+  </body>
+</html>

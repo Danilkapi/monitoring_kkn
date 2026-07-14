@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Dashboard Mahasiswa</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="../assets/css/base.css" />
+    <link rel="stylesheet" href="../assets/css/layout.css" />
+    <link rel="stylesheet" href="../assets/css/components.css" />
+    <link rel="stylesheet" href="../assets/css/responsive.css" />
+    <link rel="stylesheet" href="../assets/css/dashboard.css" />
+    <link rel="stylesheet" href="../assets/css/dashboard-mahasiswa.css" />
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
+  </head>
+
+  <body>
+    <!-- Overlay Sidebar -->
+    <div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+    <div class="wrapper">
+      <!-- ========================= -->
+      <!-- Sidebar -->
+      <!-- ========================= -->
+
+      <aside class="sidebar" id="sidebar">
+        <div class="logo-area">
+          <img src="../assets/image/Logo UYM.jpg" class="logo-img" alt="Logo UYM" />
+
+          <h3>KKN UYM</h3>
+
+          <small>Monitoring Mahasiswa</small>
+        </div>
+
+        <ul>
+          <li class="active">
+            <a href="dashboard.html">
+              <i class="fa-solid fa-house"></i>
+
+              Dashboard
+            </a>
+          </li>
+
+          <li>
+            <a href="scan.html">
+              <i class="fa-solid fa-qrcode"></i>
+
+              Scan QR
+            </a>
+          </li>
+
+          <li>
+            <a href="aktivitas.html">
+              <i class="fa-solid fa-list-check"></i>
+
+              Aktivitas
+            </a>
+          </li>
+
+          <li>
+            <a href="profil.html">
+              <i class="fa-solid fa-user"></i>
+
+              Profil
+            </a>
+          </li>
+        </ul>
+      </aside>
+
+      <!-- ========================= -->
+      <!-- Main -->
+      <!-- ========================= -->
+
+      <main class="main">
+        <!-- ========================= -->
+        <!-- Navbar -->
+        <!-- ========================= -->
+
+        <div class="navbar">
+          <div class="navbar-left">
+            <button id="menuToggle" class="menu-toggle">
+              <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <div>
+              <h2>Dashboard Mahasiswa</h2>
+
+              <small> Monitoring Kuliah Kerja Nyata Universitas Yatsi Madani </small>
+            </div>
+          </div>
+
+          <div class="navbar-right">
+            <span id="namaUser"></span>
+
+            <button class="btn btn-danger" onclick="logout()">Logout</button>
+          </div>
+        </div>
+
+        <!-- ========================= -->
+        <!-- Content -->
+        <!-- ========================= -->
+
+        <div class="content">
+          <!-- Statistik -->
+
+          <div class="cards">
+            <div class="card stat-card bg-success">
+              <div class="info">
+                <p>Status Hari Ini</p>
+
+                <h3 id="statusHariIni">-</h3>
+              </div>
+
+              <div class="icon">
+                <i class="fa-solid fa-user-check"></i>
+              </div>
+            </div>
+
+            <div class="card stat-card bg-primary">
+              <div class="info">
+                <p>Total Aktivitas</p>
+
+                <h3 id="totalAktivitas">0</h3>
+              </div>
+
+              <div class="icon">
+                <i class="fa-solid fa-list-check"></i>
+              </div>
+            </div>
+
+            <div class="card stat-card bg-warning">
+              <div class="info">
+                <p>Persentase Kehadiran</p>
+
+                <h3 id="persentase">0%</h3>
+              </div>
+
+              <div class="icon">
+                <i class="fa-solid fa-chart-line"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Grafik -->
+
+          <div class="card mt-20">
+            <div class="card-header-custom">
+              <h3>
+                <i class="fa-solid fa-chart-column"></i>
+
+                Grafik Kehadiran Mahasiswa
+              </h3>
+            </div>
+
+            <canvas id="chartKehadiran" height="90"> </canvas>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Chart JS -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- JS -->
+    <script src="../assets/js/api.js"></script>
+
+    <script src="../assets/js/mahasiswa-auth.js"></script>
+
+    <script src="../assets/js/mahasiswa-dashboard.js"></script>
+
+    <script src="../assets/js/sidebar.js"></script>
+  </body>
+</html>

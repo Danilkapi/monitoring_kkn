@@ -1,0 +1,81 @@
+/* ===========================
+   NAVBAR
+=========================== */
+
+.navbar small {
+  color: #666;
+  display: block;
+  margin-top: 3px;
+}
+
+/* ===========================
+   LEAFLET
+=========================== */
+
+.leaflet-container {
+  border-radius: 14px;
+}
+
+.leaflet-popup-content {
+  font-size: 14px;
+}
+
+/* ===========================
+   RESPONSIVE LAPTOP
+=========================== */
+
+@media (max-width: 1200px) {
+  .lokasi-page {
+    grid-template-columns: 330px 1fr;
+  }
+}
+
+/* ===========================
+   TABLET
+=========================== */
+
+@media (max-width: 992px) {
+  .lokasi-page {
+    grid-template-columns: 1fr;
+  }
+
+  #map {
+    height: 520px;
+  }
+}
+
+/* ===========================
+   HP
+=========================== */
+
+@media (max-width: 768px) {
+  .button-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .map-toolbar {
+    flex-direction: column;
+  }
+
+  #map {
+    height: 420px;
+  }
+
+  .lokasi-page .card {
+    padding: 16px;
+  }
+
+  .lokasi-page h3 {
+    font-size: 18px;
+  }
+}
+
+/* ===========================
+   HP KECIL
+=========================== */
+
+@media (max-width: 480px) {
+  #map {
+    height: 350px;
+  }
+}

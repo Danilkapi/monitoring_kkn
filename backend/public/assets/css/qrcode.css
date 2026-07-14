@@ -1,0 +1,203 @@
+/* ======================================================
+   PAGE HEADER
+====================================================== */
+
+.page-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 25px;
+  flex-wrap: wrap;
+}
+
+.page-title h2 {
+  margin: 0;
+  font-size: 30px;
+  font-weight: 700;
+}
+
+.page-title small {
+  display: block;
+  margin-top: 4px;
+  color: #6c757d;
+  font-size: 15px;
+}
+
+/* ======================================================
+   CARD
+====================================================== */
+
+.card {
+  background: #fff;
+  border: none;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.card-header-custom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 24px;
+  border-bottom: 1px solid #ececec;
+}
+
+.card-header-custom h3 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.card-header-custom i {
+  color: #0d6efd;
+  margin-right: 8px;
+}
+
+.card-body {
+  padding: 35px;
+}
+
+/* ======================================================
+   QR IMAGE
+====================================================== */
+
+.qr-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.qr-image {
+  width: 300px;
+  max-width: 100%;
+  padding: 18px;
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid #e5e5e5;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  transition: 0.3s;
+}
+
+.qr-image:hover {
+  transform: scale(1.02);
+}
+
+/* ======================================================
+   STATUS
+====================================================== */
+
+.qr-status h5 {
+  font-size: 22px;
+  font-weight: 700;
+  color: #dc3545;
+  margin-bottom: 8px;
+}
+
+.qr-status p {
+  color: #6c757d;
+  margin-bottom: 0;
+}
+
+/* ======================================================
+   ACTION
+====================================================== */
+
+.qr-action {
+  margin-top: 30px;
+}
+
+.qr-action .btn {
+  padding: 12px 30px;
+  font-size: 16px;
+  border-radius: 12px;
+}
+
+.qr-action .btn i {
+  margin-right: 8px;
+}
+
+/* ======================================================
+   ALERT
+====================================================== */
+
+.alert {
+  border-radius: 14px;
+}
+
+.alert h6 {
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.alert ul {
+  padding-left: 20px;
+}
+
+.alert li {
+  margin-bottom: 8px;
+}
+
+/* ======================================================
+   MOBILE
+====================================================== */
+
+@media (max-width: 768px) {
+  .page-title {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .page-title h2 {
+    font-size: 26px;
+  }
+
+  .card-body {
+    padding: 22px;
+  }
+
+  .qr-image {
+    width: 240px;
+  }
+
+  .qr-status h5 {
+    font-size: 19px;
+  }
+
+  .qr-action .btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-title h2 {
+    font-size: 22px;
+  }
+
+  .page-title small {
+    font-size: 13px;
+  }
+
+  .card-header-custom {
+    padding: 16px;
+  }
+
+  .card-body {
+    padding: 18px;
+  }
+
+  .card-header-custom h3 {
+    font-size: 18px;
+  }
+
+  .qr-image {
+    width: 200px;
+    padding: 12px;
+  }
+
+  .qr-status h5 {
+    font-size: 17px;
+  }
+}

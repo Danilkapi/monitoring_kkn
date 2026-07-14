@@ -1,0 +1,285 @@
+/* ======================================================
+   SCAN QR PAGE
+====================================================== */
+
+/* ===========================
+   Scan Header
+=========================== */
+
+.scan-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.scan-icon {
+  font-size: 70px;
+  color: #0d6efd;
+  margin-bottom: 15px;
+}
+
+.scan-header h4 {
+  font-size: 26px;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 10px;
+}
+
+.scan-header p {
+  color: #6c757d;
+  max-width: 600px;
+  margin: auto;
+  line-height: 1.6;
+}
+
+/* ===========================
+   QR Reader
+=========================== */
+
+.qr-reader {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto 25px;
+  overflow: hidden;
+  border-radius: 16px;
+  border: 2px solid #e9ecef;
+  background: #fff;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+#reader video {
+  border-radius: 14px;
+}
+
+/* ===========================
+   Loading Camera
+=========================== */
+
+.loading-box {
+  display: none;
+  text-align: center;
+  margin: 20px 0;
+}
+
+.spinner {
+  width: 45px;
+  height: 45px;
+  margin: auto;
+  border: 5px solid #dee2e6;
+  border-top: 5px solid #0d6efd;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.loading-box p {
+  margin-top: 12px;
+  color: #6c757d;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ===========================
+   Action Button
+=========================== */
+
+.scan-action {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-bottom: 25px;
+}
+
+.scan-action .btn {
+  min-width: 220px;
+  padding: 12px 18px;
+  font-weight: 600;
+  border-radius: 10px;
+}
+
+.scan-action i {
+  margin-right: 8px;
+}
+
+/* ===========================
+   Status Card
+=========================== */
+
+.status-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 12px;
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  margin-top: 15px;
+}
+
+.status-card i {
+  font-size: 22px;
+}
+
+.status-card span {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* ===========================
+   Success
+=========================== */
+
+.status-success {
+  background: #d1e7dd;
+  border-color: #badbcc;
+  color: #0f5132;
+}
+
+/* ===========================
+   Error
+=========================== */
+
+.status-error {
+  background: #f8d7da;
+  border-color: #f5c2c7;
+  color: #842029;
+}
+
+/* ===========================
+   Waiting
+=========================== */
+
+.status-waiting {
+  background: #fff3cd;
+  border-color: #ffe69c;
+  color: #664d03;
+}
+
+/* ===========================
+   Status Message
+=========================== */
+
+.status-message {
+  margin-top: 20px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+/* ===========================
+   Info Card
+=========================== */
+
+.info-card {
+  margin-top: 10px;
+}
+
+.info-card ul {
+  margin: 0;
+  padding-left: 22px;
+}
+
+.info-card li {
+  margin-bottom: 12px;
+  line-height: 1.7;
+  color: #495057;
+}
+
+/* ===========================
+   Card Animation
+=========================== */
+
+.card {
+  animation: fadeUp 0.4s ease;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===========================
+   Hover
+=========================== */
+
+.scan-action .btn {
+  transition: 0.3s;
+}
+
+.scan-action .btn:hover {
+  transform: translateY(-2px);
+}
+
+.card:hover {
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+}
+
+/* ======================================================
+   RESPONSIVE
+====================================================== */
+
+@media (max-width: 768px) {
+  .scan-header h4 {
+    font-size: 22px;
+  }
+
+  .scan-icon {
+    font-size: 60px;
+  }
+
+  .scan-action {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .scan-action .btn {
+    width: 100%;
+    max-width: 350px;
+  }
+
+  .status-card {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .scan-header h4 {
+    font-size: 20px;
+  }
+
+  .scan-header p {
+    font-size: 14px;
+  }
+
+  .scan-icon {
+    font-size: 50px;
+  }
+
+  .qr-reader {
+    max-width: 100%;
+  }
+
+  .status-card span {
+    font-size: 14px;
+  }
+
+  .info-card li {
+    font-size: 14px;
+  }
+}

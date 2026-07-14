@@ -1,0 +1,98 @@
+/* =====================================================
+   MONITORING DPL
+===================================================== */
+
+.monitoring-card {
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+}
+
+.monitoring-card .card-header {
+  background: #fff;
+  border-bottom: 1px solid #eee;
+  padding: 18px 22px;
+}
+
+.monitoring-card .card-header h4 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.filter-area {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.filter-area .form-control,
+.filter-area .form-select {
+  min-width: 180px;
+}
+
+.table-monitoring tbody tr {
+  transition: 0.25s;
+}
+
+.table-monitoring tbody tr:hover {
+  background: #f8f9fa;
+}
+
+.badge-hadir {
+  background: #198754;
+}
+
+.badge-terlambat {
+  background: #ffc107;
+  color: #000;
+}
+
+.badge-belum {
+  background: #dc3545;
+}
+
+.avatar-monitoring {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.monitoring-map {
+  width: 100%;
+  height: 450px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #ddd;
+}
+
+@media (max-width: 768px) {
+  .filter-area {
+    flex-direction: column;
+  }
+
+  .filter-area .form-control,
+  .filter-area .form-select {
+    width: 100%;
+  }
+
+  .monitoring-map {
+    height: 300px;
+  }
+}
+
+/* =======================================
+   MAP
+======================================= */
+
+.monitoring-map {
+  width: 100%;
+  height: 420px;
+  border-radius: 10px;
+}
+
+.leaflet-container {
+  border-radius: 10px;
+}

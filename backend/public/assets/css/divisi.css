@@ -1,0 +1,69 @@
+.page-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.page-title h2 {
+  font-size: 30px;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.page-title small {
+  color: #777;
+  font-size: 15px;
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+.table-dashboard {
+  width: 100%;
+}
+
+.card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.card-header-custom {
+  padding: 18px 24px;
+  border-bottom: 1px solid #eee;
+}
+
+.card-header-custom h3 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.modal-content {
+  border: none;
+  border-radius: 16px;
+}
+
+.modal-header {
+  padding: 20px 24px;
+}
+
+.modal-body {
+  padding: 24px;
+}
+
+.modal-footer {
+  padding: 20px 24px;
+}
+
+.form-control {
+  min-height: 48px;
+  border-radius: 10px;
+}
+
+textarea.form-control {
+  min-height: 120px;
+}

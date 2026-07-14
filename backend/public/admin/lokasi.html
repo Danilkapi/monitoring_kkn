@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Master Lokasi KKN</title>
+    <link rel="stylesheet" href="../assets/css/base.css" />
+    <link rel="stylesheet" href="../assets/css/layout.css" />
+    <link rel="stylesheet" href="../assets/css/components.css" />
+    <link rel="stylesheet" href="../assets/css/responsive.css" />
+    <link rel="stylesheet" href="../assets/css/lokasi.css" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  </head>
+
+  <body>
+    <div id="sidebarOverlay" class="sidebar-overlay"></div>
+    <div class="wrapper">
+      <!-- ================= SIDEBAR ================= -->
+
+      <aside class="sidebar" id="sidebar">
+        <div class="logo-area">
+          <img src="../assets/image/Logo UYM.jpg" class="logo-img" />
+
+          <h3>KKN UYM</h3>
+
+          <small>Monitoring KKN</small>
+        </div>
+
+        <ul>
+          <li>
+            <a href="dashboard.html">
+              <i class="fa-solid fa-house"></i>
+
+              Dashboard
+            </a>
+          </li>
+
+          <li>
+            <a href="mahasiswa.html">
+              <i class="fa-solid fa-user-graduate"></i>
+
+              Mahasiswa
+            </a>
+          </li>
+
+          <li>
+            <a href="divisi.html">
+              <i class="fa-solid fa-users"></i>
+
+              Divisi
+            </a>
+          </li>
+
+          <li>
+            <a href="absensi.html">
+              <i class="fa-solid fa-calendar-check"></i>
+
+              Absensi
+            </a>
+          </li>
+
+          <li>
+            <a href="aktivitas.html">
+              <i class="fa-solid fa-list-check"></i>
+
+              Aktivitas
+            </a>
+          </li>
+
+          <li class="active">
+            <a href="lokasi.html">
+              <i class="fa-solid fa-location-dot"></i>
+
+              Lokasi KKN
+            </a>
+          </li>
+
+          <li>
+            <a href="qrcode.html">
+              <i class="fa-solid fa-qrcode"></i>
+
+              QR Code
+            </a>
+          </li>
+
+          <li>
+            <a href="laporan.html">
+              <i class="fa-solid fa-file-lines"></i>
+
+              Laporan
+            </a>
+          </li>
+        </ul>
+      </aside>
+
+      <!-- ================= MAIN ================= -->
+
+      <main class="main">
+        <!-- NAVBAR -->
+
+        <div class="navbar">
+          <button id="menuToggle" class="menu-toggle">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <div>
+            <h2>Master Lokasi KKN</h2>
+
+            <small> Atur lokasi Posko KKN beserta radius absensi mahasiswa. </small>
+          </div>
+
+          <div class="navbar-right">
+            <span id="namaUser"></span>
+
+            <button onclick="logout()" class="btn btn-danger">Logout</button>
+          </div>
+        </div>
+
+        <!-- CONTENT -->
+
+        <div class="content lokasi-page">
+          <!-- PANEL KIRI -->
+
+          <section class="lokasi-panel">
+            <div class="card">
+              <h3>
+                <i class="fa-solid fa-gear"></i>
+
+                Pengaturan Lokasi
+              </h3>
+
+              <hr />
+
+              <div class="form-group">
+                <label>Nama Lokasi</label>
+
+                <input id="nama_lokasi" class="form-control" placeholder="Contoh : Posko KKN Desa Kronjo" />
+              </div>
+
+              <div class="form-group">
+                <label>Radius Absensi (Meter)</label>
+
+                <input id="radius" class="form-control" type="number" value="100" />
+              </div>
+
+              <div class="form-group">
+                <label>Latitude</label>
+
+                <input id="latitude" class="form-control" readonly />
+              </div>
+
+              <div class="form-group">
+                <label>Longitude</label>
+
+                <input id="longitude" class="form-control" readonly />
+              </div>
+
+              <div class="button-grid">
+                <button class="btn btn-primary" id="btnGPS">
+                  <i class="fa-solid fa-location-crosshairs"></i>
+
+                  Ambil Lokasi Saya
+                </button>
+
+                <button class="btn btn-success" id="btnSimpan">
+                  <i class="fa-solid fa-floppy-disk"></i>
+
+                  Simpan Lokasi
+                </button>
+              </div>
+            </div>
+
+            <!-- CARD INFO -->
+
+            <div class="card">
+              <h3>
+                <i class="fa-solid fa-circle-info"></i>
+
+                Informasi
+              </h3>
+
+              <hr />
+
+              <ul class="info-list">
+                <li>Klik pada peta untuk menentukan lokasi Posko.</li>
+
+                <li>Marker dapat digeser (drag & drop).</li>
+
+                <li>Radius akan mengikuti nilai yang diinput.</li>
+
+                <li>Mahasiswa hanya dapat absen jika berada di dalam radius.</li>
+              </ul>
+            </div>
+          </section>
+
+          <!-- PANEL KANAN -->
+
+          <section class="map-panel">
+            <div class="card">
+              <div class="map-toolbar">
+                <input id="searchLocation" class="form-control" placeholder="Cari lokasi..." />
+
+                <button id="btnCari" class="btn btn-primary">
+                  <i class="fa-solid fa-magnifying-glass"></i>
+
+                  Cari
+                </button>
+              </div>
+
+              <div id="map"></div>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <script src="../assets/js/api.js"></script>
+
+    <script src="../assets/js/admin-auth.js"></script>
+
+    <script src="../assets/js/lokasi.js"></script>
+
+    <script src="../assets/js/sidebar.js"></script>
+  </body>
+</html>

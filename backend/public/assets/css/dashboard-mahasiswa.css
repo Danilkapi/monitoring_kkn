@@ -1,0 +1,345 @@
+/* ======================================================
+   DASHBOARD MAHASISWA
+====================================================== */
+
+/* ===========================
+   Navbar
+=========================== */
+
+.navbar small {
+  display: block;
+  margin-top: 3px;
+  color: #6c757d;
+  font-size: 13px;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+#namaUser {
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+/* ===========================
+   Statistik Card
+=========================== */
+
+.stat-card {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+}
+
+.stat-card .info p {
+  font-size: 15px;
+  opacity: 0.95;
+  margin-bottom: 10px;
+}
+
+.stat-card .info h3 {
+  font-size: 34px;
+  font-weight: 700;
+}
+
+.stat-card .icon {
+  opacity: 0.25;
+  font-size: 60px;
+  transition: 0.3s;
+}
+
+.stat-card:hover .icon {
+  transform: scale(1.1);
+  opacity: 0.35;
+}
+
+/* ===========================
+   Grafik
+=========================== */
+
+.card-header-custom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-header-custom h3 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  color: #34495e;
+}
+
+#chartKehadiran {
+  margin-top: 20px;
+}
+
+/* ===========================
+   Welcome
+=========================== */
+
+.dashboard-welcome {
+  margin-bottom: 25px;
+}
+
+.dashboard-welcome h2 {
+  font-size: 28px;
+  color: #2c3e50;
+  margin-bottom: 8px;
+}
+
+.dashboard-welcome p {
+  color: #7f8c8d;
+  margin: 0;
+}
+
+/* ===========================
+   Animasi Card
+=========================== */
+
+.cards .card {
+  animation: fadeUp 0.5s ease;
+}
+
+.cards .card:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.cards .card:nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===========================
+   Chart Card
+=========================== */
+
+.card.mt-20 {
+  animation: fadeUp 0.6s ease;
+}
+
+/* ===========================
+   Hover Effect
+=========================== */
+
+.card {
+  transition: 0.3s;
+}
+
+.card:hover {
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+}
+
+/* ===========================
+   Icon Color
+=========================== */
+
+.bg-success .icon,
+.bg-primary .icon,
+.bg-warning .icon {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+/* ===========================
+   Canvas
+=========================== */
+
+canvas {
+  max-width: 100%;
+}
+
+/* ===========================
+   Spacing
+=========================== */
+
+.content {
+  animation: fadeUp 0.4s ease;
+}
+
+/* ======================================================
+   RESPONSIVE DASHBOARD MAHASISWA
+====================================================== */
+
+/* ===========================
+   TABLET
+=========================== */
+
+@media (max-width: 992px) {
+  .navbar {
+    padding: 15px 20px;
+  }
+
+  .navbar-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .navbar-left h2 {
+    font-size: 22px;
+  }
+
+  .navbar-left small {
+    font-size: 13px;
+  }
+}
+
+/* ===========================
+   MOBILE
+=========================== */
+
+@media (max-width: 768px) {
+  .navbar {
+    flex-wrap: wrap;
+
+    align-items: flex-start;
+
+    gap: 15px;
+
+    height: auto;
+  }
+
+  .navbar-left {
+    width: 100%;
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 15px;
+  }
+
+  .navbar-left div {
+    flex: 1;
+  }
+
+  .navbar-left h2 {
+    font-size: 22px;
+
+    margin-bottom: 4px;
+  }
+
+  .navbar-left small {
+    display: block;
+
+    line-height: 1.4;
+  }
+
+  .navbar-right {
+    width: 100%;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 12px;
+  }
+
+  #namaUser {
+    font-size: 14px;
+
+    overflow: hidden;
+
+    white-space: nowrap;
+
+    text-overflow: ellipsis;
+  }
+
+  .navbar-right .btn {
+    width: auto;
+
+    min-width: 110px;
+  }
+}
+
+/* ===========================
+   SMALL MOBILE
+=========================== */
+
+@media (max-width: 480px) {
+  .content {
+    padding: 18px;
+  }
+
+  .navbar {
+    padding: 16px;
+  }
+
+  .navbar-left {
+    align-items: flex-start;
+  }
+
+  .navbar-left h2 {
+    font-size: 19px;
+  }
+
+  .navbar-left small {
+    font-size: 12px;
+  }
+
+  .navbar-right {
+    flex-direction: column;
+
+    align-items: stretch;
+
+    gap: 10px;
+  }
+
+  #namaUser {
+    text-align: center;
+  }
+
+  .navbar-right .btn {
+    width: calc(100% - 12px);
+
+    margin: 0 auto;
+  }
+
+  .cards {
+    grid-template-columns: 1fr;
+
+    gap: 16px;
+  }
+
+  .stat-card {
+    min-height: 120px;
+  }
+
+  .stat-card .info h3 {
+    font-size: 30px;
+  }
+
+  .stat-card .icon {
+    font-size: 50px;
+  }
+
+  .card-header-custom h3 {
+    font-size: 18px;
+  }
+
+  canvas {
+    max-height: 260px;
+  }
+}

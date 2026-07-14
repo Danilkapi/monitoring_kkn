@@ -1,0 +1,623 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Aktivitas Mahasiswa</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="../assets/css/base.css" />
+    <link rel="stylesheet" href="../assets/css/layout.css" />
+    <link rel="stylesheet" href="../assets/css/components.css" />
+    <link rel="stylesheet" href="../assets/css/responsive.css" />
+    <link rel="stylesheet" href="../assets/css/mahasiswa-aktivitas.css" />
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
+  </head>
+
+  <body>
+    <div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+    <div class="wrapper">
+      <!-- ===================================== -->
+      <!-- SIDEBAR -->
+      <!-- ===================================== -->
+
+      <aside class="sidebar" id="sidebar">
+        <div class="logo-area">
+          <img src="../assets/image/Logo UYM.jpg" class="logo-img" />
+
+          <h3>KKN UYM</h3>
+
+          <small> Monitoring Mahasiswa </small>
+        </div>
+
+        <ul>
+          <li>
+            <a href="dashboard.html">
+              <i class="fa-solid fa-house"></i>
+
+              Dashboard
+            </a>
+          </li>
+
+          <li>
+            <a href="scan.html">
+              <i class="fa-solid fa-qrcode"></i>
+
+              Scan QR
+            </a>
+          </li>
+
+          <li class="active">
+            <a href="aktivitas.html">
+              <i class="fa-solid fa-list-check"></i>
+
+              Aktivitas
+            </a>
+          </li>
+
+          <li>
+            <a href="profil.html">
+              <i class="fa-solid fa-user"></i>
+
+              Profil
+            </a>
+          </li>
+        </ul>
+      </aside>
+
+      <!-- ===================================== -->
+      <!-- MAIN -->
+      <!-- ===================================== -->
+
+      <main class="main">
+        <!-- ================= NAVBAR ================= -->
+
+        <div class="navbar">
+          <div class="navbar-left">
+            <button id="menuToggle" class="menu-toggle">
+              <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <div>
+              <h2>Aktivitas Mahasiswa</h2>
+
+              <small> Catat seluruh aktivitas KKN setiap hari </small>
+            </div>
+          </div>
+
+          <div class="navbar-right">
+            <span id="namaUser"></span>
+
+            <button class="btn btn-danger" onclick="logout()">Logout</button>
+          </div>
+        </div>
+
+        <!-- ================= CONTENT ================= -->
+
+        <div class="content">
+          <!-- ================= FORM CARD ================= -->
+
+          <div class="card form-card">
+            <div class="card-header-custom">
+              <div>
+                <h3 id="formTitle">
+                  <i class="fa-solid fa-plus-circle"></i>
+
+                  Tambah Aktivitas
+                </h3>
+
+                <small id="formSubtitle"> Isi kegiatan yang telah Anda lakukan hari ini. </small>
+              </div>
+            </div>
+
+            <div class="card-body">
+              <input type="hidden" id="idAktivitas" />
+
+              <!-- Judul -->
+
+              <div class="form-group">
+                <label> Judul Kegiatan </label>
+
+                <input type="text" id="judul_kegiatan" class="form-control" maxlength="100" placeholder="Contoh : Mengajar Matematika Kelas 3" />
+              </div>
+
+              <!-- Deskripsi -->
+
+              <div class="form-group">
+                <label> Deskripsi Aktivitas </label>
+
+                <textarea id="deskripsi" class="form-control" rows="5" placeholder="Tuliskan kegiatan yang dilakukan hari ini..."></textarea>
+
+                <small class="text-muted"> Minimal 20 karakter. </small>
+              </div>
+
+              <!-- Grid -->
+
+              <div class="form-grid">
+                <div class="form-group">
+                  <label> Tanggal </label>
+
+                  <input type="date" id="tanggal" class="form-control" />
+                </div>
+
+                <div class="form-group">
+                  <label> Dokumentasi Foto </label>
+
+                  <input type="file" id="foto" class="form-control" accept="image/*" />
+                </div>
+              </div>
+
+              <!-- Preview -->
+
+              <div class="preview-wrapper">
+                <label> Preview Foto </label>
+
+                <div class="preview-area">
+                  <img id="previewFoto" src="/assets/image/no-image.png" alt="Preview Foto" />
+                </div>
+              </div>
+
+              <!-- Tombol -->
+
+              <div class="form-action">
+                <button id="btnSimpan" class="btn btn-success" onclick="simpanAktivitas()">
+                  <i class="fa-solid fa-floppy-disk"></i>
+
+                  Simpan Aktivitas
+                </button>
+
+                <button id="btnReset" class="btn btn-secondary" onclick="resetForm()">
+                  <i class="fa-solid fa-rotate-left"></i>
+
+                  Reset
+                </button>
+
+                <button id="btnCancelEdit" class="btn btn-danger" onclick="batalEdit()" style="display: none">
+                  <i class="fa-solid fa-xmark"></i>
+
+                  Batal Edit
+                </button>
+              </div>
+            </div>
+          </div>
+          <!-- ===================================== -->
+          <!-- RIWAYAT AKTIVITAS -->
+          <!-- ===================================== -->
+
+          <div class="card mt-20">
+            <div class="card-header-custom">
+              <div>
+                <h3>
+                  <i class="fa-solid fa-clock-rotate-left"></i>
+
+                  Riwayat Aktivitas
+                </h3>
+
+                <small> Daftar seluruh aktivitas yang telah Anda unggah. </small>
+              </div>
+
+              <div>
+                <span id="totalAktivitas" class="badge bg-primary"> 0 Aktivitas </span>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="table-dashboard">
+                <thead>
+                  <tr>
+                    <th width="90">Foto</th>
+
+                    <th>Judul Kegiatan</th>
+
+                    <th width="170">Tanggal</th>
+
+                    <th width="130">Status</th>
+
+                    <th width="180">Aksi</th>
+                  </tr>
+                </thead>
+
+                <tbody id="tableAktivitas">
+                  <tr>
+                    <td colspan="5" style="text-align: center; padding: 40px">
+                      <i class="fa-solid fa-spinner fa-spin"></i>
+
+                      Memuat data aktivitas...
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- ===================================== -->
+    <!-- MODAL DETAIL -->
+    <!-- ===================================== -->
+
+    <div class="modal fade" id="modalDetail" tabindex="-1">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Detail Aktivitas</h5>
+
+            <button class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+
+          <div class="modal-body">
+            <div class="detail-foto">
+              <img id="detailFoto" src="/assets/image/no-image.png" />
+            </div>
+
+            <div class="detail-item">
+              <label> Judul Kegiatan </label>
+
+              <h4 id="detailJudul"></h4>
+            </div>
+
+            <div class="detail-item">
+              <label> Tanggal </label>
+
+              <p id="detailTanggal"></p>
+            </div>
+
+            <div class="detail-item">
+              <label> Deskripsi </label>
+
+              <p id="detailDeskripsi"></p>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================================== -->
+    <!-- MODAL HAPUS -->
+    <!-- ===================================== -->
+
+    <div class="modal fade" id="modalDelete" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header bg-danger text-white">
+            <h5 class="modal-title">Konfirmasi Hapus</h5>
+          </div>
+
+          <div class="modal-body">
+            <div style="text-align: center">
+              <i class="fa-solid fa-trash-can" style="font-size: 60px; color: #dc3545; margin-bottom: 20px"> </i>
+
+              <h5>Hapus Aktivitas?</h5>
+
+              <p>Data aktivitas yang dihapus tidak dapat dikembalikan lagi.</p>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+
+            <button id="btnDelete" class="btn btn-danger">
+              <i class="fa-solid fa-trash"></i>
+
+              Ya, Hapus
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- ===================================== -->
+    <!-- TOAST NOTIFICATION -->
+    <!-- ===================================== -->
+
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+      <div id="toastNotif" class="toast align-items-center text-bg-success border-0" role="alert">
+        <div class="d-flex">
+          <div class="toast-body" id="toastMessage">Berhasil.</div>
+
+          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================================== -->
+    <!-- LOADING -->
+    <!-- ===================================== -->
+
+    <div id="loadingOverlay" class="loading-overlay" style="display: none">
+      <div class="loading-content">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden"> Loading... </span>
+        </div>
+
+        <p class="mt-3">Memproses data...</p>
+      </div>
+    </div>
+
+    <!-- ===================================== -->
+    <!-- BACK TO TOP -->
+    <!-- ===================================== -->
+
+    <button id="btnTop" class="btn-top">
+      <i class="fa-solid fa-arrow-up"></i>
+    </button>
+
+    <!-- ===================================== -->
+    <!-- FOOTER -->
+    <!-- ===================================== -->
+
+    <footer class="page-footer">
+      <p>© 2026 Monitoring KKN UYM</p>
+    </footer>
+
+    <!-- ===================================== -->
+    <!-- BOOTSTRAP -->
+    <!-- ===================================== -->
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- ===================================== -->
+    <!-- API -->
+    <!-- ===================================== -->
+
+    <script src="../assets/js/api.js"></script>
+
+    <!-- ===================================== -->
+    <!-- AUTH -->
+    <!-- ===================================== -->
+
+    <script src="../assets/js/mahasiswa-auth.js"></script>
+
+    <!-- ===================================== -->
+    <!-- SIDEBAR -->
+    <!-- ===================================== -->
+
+    <script src="../assets/js/sidebar.js"></script>
+
+    <!-- ===================================== -->
+    <!-- PAGE -->
+    <!-- ===================================== -->
+
+    <script src="../assets/js/mahasiswa-aktivitas.js"></script>
+    <!-- ===================================== -->
+    <!-- SCRIPT TAMBAHAN -->
+    <!-- ===================================== -->
+
+    <script>
+      // ===============================
+      // Back To Top
+      // ===============================
+
+      const btnTop = document.getElementById("btnTop");
+
+      window.addEventListener("scroll", () => {
+        if (window.scrollY > 250) {
+          btnTop.classList.add("show");
+        } else {
+          btnTop.classList.remove("show");
+        }
+      });
+
+      btnTop.addEventListener("click", () => {
+        window.scrollTo({
+          top: 0,
+
+          behavior: "smooth",
+        });
+      });
+
+      // ===============================
+      // Set Tanggal Hari Ini
+      // ===============================
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const tanggal = document.getElementById("tanggal");
+
+        if (tanggal && !tanggal.value) {
+          tanggal.value = new Date().toISOString().split("T")[0];
+        }
+      });
+
+      // ===============================
+      // Counter Deskripsi
+      // ===============================
+
+      const deskripsi = document.getElementById("deskripsi");
+
+      if (deskripsi) {
+        const info = document.createElement("small");
+
+        info.id = "counterDeskripsi";
+
+        info.className = "text-muted";
+
+        info.innerHTML = "0 karakter";
+
+        deskripsi.parentNode.appendChild(info);
+
+        deskripsi.addEventListener("input", () => {
+          info.innerHTML = `${deskripsi.value.length} karakter`;
+        });
+      }
+
+      // ===============================
+      // Konfirmasi Keluar Saat Sedang Edit
+      // ===============================
+
+      let formChanged = false;
+
+      document.querySelectorAll("input, textarea").forEach((el) => {
+        el.addEventListener("input", () => {
+          formChanged = true;
+        });
+      });
+
+      window.addEventListener("beforeunload", function (e) {
+        if (!formChanged) return;
+
+        e.preventDefault();
+
+        e.returnValue = "";
+      });
+
+      // ===============================
+      // Setelah Simpan
+      // ===============================
+
+      function formBerhasilDisimpan() {
+        formChanged = false;
+      }
+
+      // ===============================
+      // Setelah Reset
+      // ===============================
+
+      function formBerhasilReset() {
+        formChanged = false;
+      }
+    </script>
+    <script>
+      // ==========================================
+      // MODE EDIT
+      // ==========================================
+
+      function aktifkanModeEdit() {
+        const title = document.getElementById("formTitle");
+
+        const subtitle = document.getElementById("formSubtitle");
+
+        const btnSimpan = document.getElementById("btnSimpan");
+
+        const btnCancel = document.getElementById("btnCancelEdit");
+
+        if (title) {
+          title.innerHTML = `
+            <i class="fa-solid fa-pen"></i>
+            Edit Aktivitas
+          `;
+        }
+
+        if (subtitle) {
+          subtitle.innerHTML = "Perbarui data aktivitas yang telah dibuat.";
+        }
+
+        if (btnSimpan) {
+          btnSimpan.innerHTML = `
+            <i class="fa-solid fa-floppy-disk"></i>
+            Update Aktivitas
+          `;
+
+          btnSimpan.classList.remove("btn-success");
+
+          btnSimpan.classList.add("btn-warning");
+        }
+
+        if (btnCancel) {
+          btnCancel.style.display = "inline-flex";
+        }
+      }
+
+      // ==========================================
+      // MODE TAMBAH
+      // ==========================================
+
+      function nonaktifkanModeEdit() {
+        const title = document.getElementById("formTitle");
+
+        const subtitle = document.getElementById("formSubtitle");
+
+        const btnSimpan = document.getElementById("btnSimpan");
+
+        const btnCancel = document.getElementById("btnCancelEdit");
+
+        if (title) {
+          title.innerHTML = `
+            <i class="fa-solid fa-plus-circle"></i>
+            Tambah Aktivitas
+          `;
+        }
+
+        if (subtitle) {
+          subtitle.innerHTML = "Isi kegiatan yang telah Anda lakukan hari ini.";
+        }
+
+        if (btnSimpan) {
+          btnSimpan.innerHTML = `
+            <i class="fa-solid fa-floppy-disk"></i>
+            Simpan Aktivitas
+          `;
+
+          btnSimpan.classList.remove("btn-warning");
+
+          btnSimpan.classList.add("btn-success");
+        }
+
+        if (btnCancel) {
+          btnCancel.style.display = "none";
+        }
+      }
+
+      // ==========================================
+      // BATAL EDIT
+      // ==========================================
+
+      function batalEdit() {
+        if (typeof resetForm === "function") {
+          resetForm();
+        }
+
+        nonaktifkanModeEdit();
+      }
+
+      // ==========================================
+      // OVERRIDE EDIT DARI mahasiswa-aktivitas.js
+      // ==========================================
+
+      if (typeof editAktivitas === "function") {
+        const oldEdit = editAktivitas;
+
+        editAktivitas = function (id) {
+          oldEdit(id);
+
+          aktifkanModeEdit();
+        };
+      }
+
+      // ==========================================
+      // OVERRIDE RESET
+      // ==========================================
+
+      if (typeof resetForm === "function") {
+        const oldReset = resetForm;
+
+        resetForm = function () {
+          oldReset();
+
+          nonaktifkanModeEdit();
+
+          formBerhasilReset();
+        };
+      }
+
+      // ==========================================
+      // SAAT HALAMAN PERTAMA DIBUKA
+      // ==========================================
+
+      document.addEventListener("DOMContentLoaded", () => {
+        nonaktifkanModeEdit();
+      });
+    </script>
+  </body>
+</html>
