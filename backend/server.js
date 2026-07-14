@@ -34,7 +34,7 @@ if (!fs.existsSync(uploadsDir)) {
 app.use("/uploads", express.static("uploads"));
 
 app.get("/", (req, res) => {
-  res.send("Sistem Monitoring KKN Berjalan");
+  res.sendFile(path.join(__dirname, "public", "auth", "login.html"));
 });
 
 // API
