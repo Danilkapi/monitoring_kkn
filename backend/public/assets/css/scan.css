@@ -225,6 +225,16 @@
   transform: translateY(-2px);
 }
 
+.btn-warning {
+  background-color: #ffc107;
+  color: #212529;
+  border: none;
+}
+
+.btn-warning:hover {
+  background-color: #ffca2c;
+}
+
 .card:hover {
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
 }

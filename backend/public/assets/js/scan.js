@@ -2,6 +2,10 @@ const authToken = localStorage.getItem("token");
 
 let html5QrCode = null;
 
+let availableCameras = [];
+
+let currentCameraIndex = 0;
+
 const loading = document.getElementById("loadingCamera");
 
 const uploadQR = document.getElementById("uploadQR");
@@ -9,6 +13,8 @@ const uploadQR = document.getElementById("uploadQR");
 const btnStartCamera = document.getElementById("btnStartCamera");
 
 const btnUploadQR = document.getElementById("btnUploadQR");
+
+const btnSwitchCamera = document.getElementById("btnSwitchCamera");
 
 // ======================================
 // UPDATE STATUS
@@ -54,6 +60,8 @@ async function startCamera() {
   try {
     loading.style.display = "block";
 
+    btnSwitchCamera.style.display = "none";
+
     html5QrCode = new Html5Qrcode("reader");
 
     const cameras = await Html5Qrcode.getCameras();
@@ -66,8 +74,16 @@ async function startCamera() {
       return;
     }
 
+    availableCameras = cameras;
+
+    currentCameraIndex = 0;
+
+    if (availableCameras.length > 1) {
+      btnSwitchCamera.style.display = "inline-flex";
+    }
+
     await html5QrCode.start(
-      cameras[0].id,
+      availableCameras[currentCameraIndex].id,
       {
         fps: 10,
         qrbox: 250,
@@ -82,6 +98,41 @@ async function startCamera() {
     loading.style.display = "none";
 
     updateStatus("fa-solid fa-circle-xmark", "red", "Tidak dapat mengakses kamera.");
+  }
+}
+
+// ======================================
+// SWITCH CAMERA
+// ======================================
+
+btnSwitchCamera.addEventListener("click", switchCamera);
+
+async function switchCamera() {
+  if (availableCameras.length <= 1) return;
+
+  try {
+    if (html5QrCode && html5QrCode.isScanning) {
+      await html5QrCode.stop();
+    }
+
+    currentCameraIndex = (currentCameraIndex + 1) % availableCameras.length;
+
+    const cameraLabel = availableCameras[currentCameraIndex].label || `Kamera ${currentCameraIndex + 1}`;
+
+    updateStatus("fa-solid fa-camera-rotate", "#0d6efd", `Beralih ke ${cameraLabel}...`);
+
+    await html5QrCode.start(
+      availableCameras[currentCameraIndex].id,
+      {
+        fps: 10,
+        qrbox: 250,
+      },
+      onScanSuccess,
+    );
+
+    updateStatus("fa-solid fa-camera", "#0d6efd", `Kamera aktif: ${cameraLabel}. Silakan scan QR Code.`);
+  } catch (err) {
+    updateStatus("fa-solid fa-circle-xmark", "red", "Gagal mengganti kamera.");
   }
 }
 
