@@ -98,3 +98,20 @@ document.getElementById("password").addEventListener("keydown", function (e) {
     login();
   }
 });
+
+// =======================================
+// Toggle Show/Hide Password
+// =======================================
+
+document.getElementById("togglePassword").addEventListener("click", function () {
+  const passwordInput = document.getElementById("password");
+  const icon = document.getElementById("toggleIcon");
+
+  if (passwordInput.type === "password") {
+    passwordInput.type = "text";
+    icon.className = "fa-solid fa-eye-slash";
+  } else {
+    passwordInput.type = "password";
+    icon.className = "fa-solid fa-eye";
+  }
+});
