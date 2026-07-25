@@ -31,7 +31,7 @@ exports.generateQR = async (req, res) => {
     const tanggal = new Date().toISOString().slice(0, 10);
 
     const expired = new Date();
-    expired.setMinutes(expired.getMinutes() + 5);
+    expired.setHours(expired.getHours() + 1);
 
     db.query(
       `
