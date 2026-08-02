@@ -42,6 +42,8 @@ async function loadDivisi() {
 
     select.innerHTML = "";
 
+    select.innerHTML += `<option value="">Pilih Divisi</option>`;
+
     daftarDivisi.forEach((divisi) => {
       select.innerHTML += `
                 <option value="${divisi.id}">
@@ -119,7 +121,7 @@ function renderMahasiswa(data) {
 
                 <td>${item.prodi}</td>
 
-                <td>${item.nama_divisi}</td>
+                <td>${item.nama_divisi || "-"}</td>
 
                 <td>
 
@@ -127,7 +129,7 @@ function renderMahasiswa(data) {
 
                 </td>
 
-                <td>${item.no_hp}</td>
+                <td>${item.no_hp || "-"}</td>
 
                 <td>
 
@@ -235,7 +237,7 @@ function editMahasiswa(id) {
 
   document.getElementById("jabatan").value = mahasiswa.jabatan;
 
-  document.getElementById("divisi_id").value = mahasiswa.divisi_id;
+  document.getElementById("divisi_id").value = mahasiswa.divisi_id || "";
 
   modalMahasiswa.show();
 }
@@ -258,7 +260,7 @@ async function simpanMahasiswa() {
 
     jabatan: document.getElementById("jabatan").value,
 
-    divisi_id: document.getElementById("divisi_id").value,
+    divisi_id: document.getElementById("divisi_id").value || null,
   };
 
   // ================= VALIDASI =================
@@ -342,7 +344,12 @@ document.getElementById("searchMahasiswa").addEventListener("keyup", function ()
   const keyword = this.value.toLowerCase();
 
   const hasil = daftarMahasiswa.filter((item) => {
-    return item.nama.toLowerCase().includes(keyword) || item.nim.toLowerCase().includes(keyword) || item.prodi.toLowerCase().includes(keyword) || item.nama_divisi.toLowerCase().includes(keyword);
+    return (
+      (item.nama || "").toLowerCase().includes(keyword) ||
+      (item.nim || "").toLowerCase().includes(keyword) ||
+      (item.prodi || "").toLowerCase().includes(keyword) ||
+      (item.nama_divisi || "").toLowerCase().includes(keyword)
+    );
   });
 
   renderMahasiswa(hasil);
@@ -417,7 +424,7 @@ function renderMahasiswa(data) {
 
             <td>${item.prodi}</td>
 
-            <td>${item.nama_divisi}</td>
+            <td>${item.nama_divisi || "-"}</td>
 
             <td>
 
@@ -425,7 +432,7 @@ function renderMahasiswa(data) {
 
             </td>
 
-            <td>${item.no_hp}</td>
+            <td>${item.no_hp || "-"}</td>
 
             <td>
 

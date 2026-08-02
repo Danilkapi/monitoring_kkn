@@ -4,13 +4,23 @@ const db = require("../config/db");
 // Ambil Semua Mahasiswa
 // ==============================
 exports.getAll = (req, res) => {
-  db.query("SELECT * FROM mahasiswa", (err, result) => {
-    if (err) {
-      return res.status(500).json(err);
-    }
+  db.query(
+    `
+    SELECT
+      m.*,
+      d.nama_divisi
+    FROM mahasiswa m
+    LEFT JOIN divisi d ON m.divisi_id = d.id
+    ORDER BY m.id ASC
+    `,
+    (err, result) => {
+      if (err) {
+        return res.status(500).json(err);
+      }
 
-    res.json(result.rows);
-  });
+      res.json(result.rows);
+    },
+  );
 };
 
 // ==============================
@@ -19,19 +29,30 @@ exports.getAll = (req, res) => {
 exports.getById = (req, res) => {
   const { id } = req.params;
 
-  db.query("SELECT * FROM mahasiswa WHERE id=$1", [id], (err, result) => {
-    if (err) {
-      return res.status(500).json(err);
-    }
+  db.query(
+    `
+    SELECT
+      m.*,
+      d.nama_divisi
+    FROM mahasiswa m
+    LEFT JOIN divisi d ON m.divisi_id = d.id
+    WHERE m.id=$1
+    `,
+    [id],
+    (err, result) => {
+      if (err) {
+        return res.status(500).json(err);
+      }
 
-    if (result.rows.length === 0) {
-      return res.status(404).json({
-        message: "Mahasiswa tidak ditemukan",
-      });
-    }
+      if (result.rows.length === 0) {
+        return res.status(404).json({
+          message: "Mahasiswa tidak ditemukan",
+        });
+      }
 
-    res.json(result.rows[0]);
-  });
+      res.json(result.rows[0]);
+    },
+  );
 };
 
 // ==============================
