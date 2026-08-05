@@ -36,14 +36,59 @@ exports.getDashboard = async (req, res) => {
           db.query(queryAktivitas, (err, aktivitasResult) => {
             if (err) return res.status(500).json(err);
 
-            res.json({
-              total_mahasiswa: mahasiswaResult.rows[0].total_mahasiswa,
+            // ======================================================
+            // GRAFIK KEHADIRAN 7 HARI
+            // ======================================================
 
-              total_divisi: divisiResult.rows[0].total_divisi,
+            const queryGrafik = `
+                SELECT
+                    TO_CHAR(tanggal, 'DD/MM') AS tanggal,
+                    COUNT(*) AS total
+                FROM kehadiran
+                WHERE tanggal >= CURRENT_DATE - INTERVAL '6 days'
+                GROUP BY tanggal
+                ORDER BY tanggal ASC
+            `;
 
-              total_kehadiran: kehadiranResult.rows[0].total_kehadiran,
+            db.query(queryGrafik, (err, grafikResult) => {
+              if (err) return res.status(500).json(err);
 
-              total_aktivitas: aktivitasResult.rows[0].total_aktivitas,
+              // ======================================================
+              // AKTIVITAS TERBARU
+              // ======================================================
+
+              const queryAktivitasTerbaru = `
+                SELECT
+                    m.nama,
+                    d.nama_divisi,
+                    a.judul_kegiatan,
+                    a.tanggal
+                FROM aktivitas a
+                JOIN mahasiswa m
+                    ON m.id = a.mahasiswa_id
+                LEFT JOIN divisi d
+                    ON d.id = m.divisi_id
+                ORDER BY a.created_at DESC
+                LIMIT 5
+              `;
+
+              db.query(queryAktivitasTerbaru, (err, aktivitasTerbaruResult) => {
+                if (err) return res.status(500).json(err);
+
+                res.json({
+                  total_mahasiswa: mahasiswaResult.rows[0].total_mahasiswa,
+
+                  total_divisi: divisiResult.rows[0].total_divisi,
+
+                  total_kehadiran: kehadiranResult.rows[0].total_kehadiran,
+
+                  total_aktivitas: aktivitasResult.rows[0].total_aktivitas,
+
+                  grafik: grafikResult.rows,
+
+                  aktivitas_terbaru: aktivitasTerbaruResult.rows,
+                });
+              });
             });
           });
         });

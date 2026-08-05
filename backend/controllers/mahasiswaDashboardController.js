@@ -88,12 +88,25 @@ exports.dashboard = (req, res) => {
                   db.query(
                     `
                     SELECT
-                      TO_CHAR(tanggal, 'Day') hari,
-                      COUNT(*) jumlah
-                    FROM kehadiran
-                    WHERE mahasiswa_id=$1
-                    GROUP BY TO_CHAR(tanggal, 'Day'), EXTRACT(DOW FROM tanggal)
-                    ORDER BY EXTRACT(DOW FROM tanggal)
+                      CASE dow
+                        WHEN 0 THEN 'Minggu'
+                        WHEN 1 THEN 'Senin'
+                        WHEN 2 THEN 'Selasa'
+                        WHEN 3 THEN 'Rabu'
+                        WHEN 4 THEN 'Kamis'
+                        WHEN 5 THEN 'Jumat'
+                        ELSE 'Sabtu'
+                      END AS hari,
+                      jumlah
+                    FROM (
+                      SELECT
+                        EXTRACT(DOW FROM tanggal) AS dow,
+                        COUNT(*) AS jumlah
+                      FROM kehadiran
+                      WHERE mahasiswa_id=$1
+                      GROUP BY EXTRACT(DOW FROM tanggal)
+                    ) sub
+                    ORDER BY dow
                     `,
                     [mahasiswaId],
                     (err, grafik) => {
