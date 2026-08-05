@@ -156,7 +156,7 @@ function laporanAbsensi(req, res, divisi, mahasiswa, tanggal_awal, tanggal_akhir
         INNER JOIN mahasiswa m
             ON k.mahasiswa_id = m.id
 
-        INNER JOIN divisi d
+        LEFT JOIN divisi d
             ON m.divisi_id = d.id
     `;
 
@@ -240,7 +240,7 @@ function laporanAktivitas(req, res, divisi, mahasiswa, tanggal_awal, tanggal_akh
         INNER JOIN mahasiswa m
             ON a.mahasiswa_id = m.id
 
-        INNER JOIN divisi d
+        LEFT JOIN divisi d
             ON m.divisi_id = d.id
     `;
 
@@ -299,7 +299,7 @@ function laporanMahasiswa(req, res, divisi) {
 
         FROM mahasiswa m
 
-        INNER JOIN divisi d
+        LEFT JOIN divisi d
             ON m.divisi_id = d.id
     `;
 

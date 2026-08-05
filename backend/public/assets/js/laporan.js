@@ -123,6 +123,8 @@ async function previewLaporan() {
     const jenis = jenisLaporan.value;
 
     const params = new URLSearchParams({
+      jenis: jenis,
+
       divisi: divisiFilter.value,
 
       mahasiswa: mahasiswaFilter.value,
@@ -132,28 +134,7 @@ async function previewLaporan() {
       tanggal_akhir: tanggalAkhir.value,
     });
 
-    let endpoint = "";
-
-    switch (jenis) {
-      case "absensi":
-        endpoint = "/laporan/absensi";
-        break;
-
-      case "aktivitas":
-        endpoint = "/laporan/aktivitas";
-        break;
-
-      case "mahasiswa":
-        endpoint = "/laporan/mahasiswa";
-        break;
-
-      case "divisi":
-        endpoint = "/laporan/divisi";
-        break;
-
-      default:
-        endpoint = "/laporan/absensi";
-    }
+    const endpoint = "/laporan";
 
     const result = await getData(`${endpoint}?${params.toString()}`);
 
@@ -323,7 +304,7 @@ function renderAbsensi(data) {
 
                 <td>${item.nama_mahasiswa}</td>
 
-                <td>${item.nama_divisi}</td>
+                <td>${item.nama_divisi || "-"}</td>
 
                 <td>${formatTanggal(item.tanggal)}</td>
 
@@ -419,9 +400,9 @@ function renderMahasiswa(data) {
 
                 <td>${item.nim}</td>
 
-                <td>${item.nama_divisi}</td>
+                <td>${item.nama_divisi || "-"}</td>
 
-                <td>${item.no_hp}</td>
+                <td>${item.no_hp || "-"}</td>
 
             </tr>
         `;
