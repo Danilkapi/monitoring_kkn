@@ -166,7 +166,7 @@ function renderTable(data) {
         text = "Tidak Valid";
       }
 
-      const foto = item.foto ? `/uploads/profile/${item.foto}` : "../assets/image/user.png";
+      const foto = item.foto ? `/uploads/profile/${item.foto}` : "../assets/image/default-user.png";
 
       return `
 <tr>
@@ -178,7 +178,7 @@ width="45"
 height="45"
 class="rounded-circle"
 style="object-fit:cover"
-onerror="this.src='../assets/image/user.png'">
+onerror="this.onerror=null; this.src='../assets/image/default-user.png'">
 </td>
 
 <td>${item.nim}</td>
